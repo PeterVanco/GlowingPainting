@@ -1,0 +1,674 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"syscalls.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.global	_kill
+  20              		.thumb
+  21              		.thumb_func
+  23              	_kill:
+  24              	.LFB29:
+  25              		.file 1 "../src/syscalls.c"
+   1:../src/syscalls.c **** /*
+   2:../src/syscalls.c ****  * syscalls.c
+   3:../src/syscalls.c ****  *
+   4:../src/syscalls.c ****  *  Created on: 03.12.2009
+   5:../src/syscalls.c ****  *      Author: Martin Thomas, 3BSD license
+   6:../src/syscalls.c ****  */
+   7:../src/syscalls.c **** 
+   8:../src/syscalls.c **** #ifdef __cplusplus
+   9:../src/syscalls.c ****  extern "C" {
+  10:../src/syscalls.c **** #endif
+  11:../src/syscalls.c **** 
+  12:../src/syscalls.c **** #include <reent.h>
+  13:../src/syscalls.c **** #include <errno.h>
+  14:../src/syscalls.c **** #include <stdlib.h> /* abort */
+  15:../src/syscalls.c **** #include <sys/types.h>
+  16:../src/syscalls.c **** #include <sys/stat.h>
+  17:../src/syscalls.c **** #include <unistd.h>
+  18:../src/syscalls.c **** #include <reent.h>
+  19:../src/syscalls.c **** #include "stm32f10x.h"
+  20:../src/syscalls.c **** 
+  21:../src/syscalls.c **** #undef errno
+  22:../src/syscalls.c **** extern int errno;
+  23:../src/syscalls.c **** 
+  24:../src/syscalls.c **** int _kill(int pid, int sig)
+  25:../src/syscalls.c **** {
+  26              		.loc 1 25 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 8
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 80B4     		push	{r7}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 83B0     		sub	sp, sp, #12
+  36              	.LCFI1:
+  37              		.cfi_def_cfa_offset 16
+  38 0004 00AF     		add	r7, sp, #0
+  39              	.LCFI2:
+  40              		.cfi_def_cfa_register 7
+  41 0006 7860     		str	r0, [r7, #4]
+  42 0008 3960     		str	r1, [r7, #0]
+  26:../src/syscalls.c **** 	(void)pid;
+  27:../src/syscalls.c **** 	(void)sig; /* avoid warnings */
+  28:../src/syscalls.c **** 	errno = EINVAL;
+  43              		.loc 1 28 0
+  44 000a 40F20003 		movw	r3, #:lower16:errno
+  45 000e C0F20003 		movt	r3, #:upper16:errno
+  46 0012 4FF01602 		mov	r2, #22
+  47 0016 1A60     		str	r2, [r3, #0]
+  29:../src/syscalls.c **** 	return -1;
+  48              		.loc 1 29 0
+  49 0018 4FF0FF33 		mov	r3, #-1
+  30:../src/syscalls.c **** }
+  50              		.loc 1 30 0
+  51 001c 1846     		mov	r0, r3
+  52 001e 07F10C07 		add	r7, r7, #12
+  53 0022 BD46     		mov	sp, r7
+  54 0024 80BC     		pop	{r7}
+  55 0026 7047     		bx	lr
+  56              		.cfi_endproc
+  57              	.LFE29:
+  59              		.align	2
+  60              		.global	_exit
+  61              		.thumb
+  62              		.thumb_func
+  64              	_exit:
+  65              	.LFB30:
+  31:../src/syscalls.c **** 
+  32:../src/syscalls.c **** void _exit(int status)
+  33:../src/syscalls.c **** {
+  66              		.loc 1 33 0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 8
+  69              		@ frame_needed = 1, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  71 0028 80B4     		push	{r7}
+  72              	.LCFI3:
+  73              		.cfi_def_cfa_offset 4
+  74              		.cfi_offset 7, -4
+  75 002a 83B0     		sub	sp, sp, #12
+  76              	.LCFI4:
+  77              		.cfi_def_cfa_offset 16
+  78 002c 00AF     		add	r7, sp, #0
+  79              	.LCFI5:
+  80              		.cfi_def_cfa_register 7
+  81 002e 7860     		str	r0, [r7, #4]
+  82              	.L3:
+  34:../src/syscalls.c **** 	while(1) {;}
+  83              		.loc 1 34 0 discriminator 1
+  84 0030 FEE7     		b	.L3
+  85              		.cfi_endproc
+  86              	.LFE30:
+  88 0032 00BF     		.align	2
+  89              		.global	_getpid
+  90              		.thumb
+  91              		.thumb_func
+  93              	_getpid:
+  94              	.LFB31:
+  35:../src/syscalls.c **** }
+  36:../src/syscalls.c **** 
+  37:../src/syscalls.c **** int _getpid(void)
+  38:../src/syscalls.c **** {
+  95              		.loc 1 38 0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 1, uses_anonymous_args = 0
+  99              		@ link register save eliminated.
+ 100 0034 80B4     		push	{r7}
+ 101              	.LCFI6:
+ 102              		.cfi_def_cfa_offset 4
+ 103              		.cfi_offset 7, -4
+ 104 0036 00AF     		add	r7, sp, #0
+ 105              	.LCFI7:
+ 106              		.cfi_def_cfa_register 7
+  39:../src/syscalls.c **** 	return 1;
+ 107              		.loc 1 39 0
+ 108 0038 4FF00103 		mov	r3, #1
+  40:../src/syscalls.c **** }
+ 109              		.loc 1 40 0
+ 110 003c 1846     		mov	r0, r3
+ 111 003e BD46     		mov	sp, r7
+ 112 0040 80BC     		pop	{r7}
+ 113 0042 7047     		bx	lr
+ 114              		.cfi_endproc
+ 115              	.LFE31:
+ 117              		.section	.bss.heap_end,"aw",%nobits
+ 118              		.align	2
+ 121              	heap_end:
+ 122 0000 00000000 		.space	4
+ 123              		.text
+ 124              		.align	2
+ 125              		.global	get_heap_end
+ 126              		.thumb
+ 127              		.thumb_func
+ 129              	get_heap_end:
+ 130              	.LFB32:
+  41:../src/syscalls.c **** 
+  42:../src/syscalls.c **** 
+  43:../src/syscalls.c **** extern char _end; /* Defined by the linker */
+  44:../src/syscalls.c **** static char *heap_end;
+  45:../src/syscalls.c **** 
+  46:../src/syscalls.c **** char* get_heap_end(void)
+  47:../src/syscalls.c **** {
+ 131              		.loc 1 47 0
+ 132              		.cfi_startproc
+ 133              		@ args = 0, pretend = 0, frame = 0
+ 134              		@ frame_needed = 1, uses_anonymous_args = 0
+ 135              		@ link register save eliminated.
+ 136 0044 80B4     		push	{r7}
+ 137              	.LCFI8:
+ 138              		.cfi_def_cfa_offset 4
+ 139              		.cfi_offset 7, -4
+ 140 0046 00AF     		add	r7, sp, #0
+ 141              	.LCFI9:
+ 142              		.cfi_def_cfa_register 7
+  48:../src/syscalls.c **** 	return (char*) heap_end;
+ 143              		.loc 1 48 0
+ 144 0048 40F20003 		movw	r3, #:lower16:heap_end
+ 145 004c C0F20003 		movt	r3, #:upper16:heap_end
+ 146 0050 1B68     		ldr	r3, [r3, #0]
+  49:../src/syscalls.c **** }
+ 147              		.loc 1 49 0
+ 148 0052 1846     		mov	r0, r3
+ 149 0054 BD46     		mov	sp, r7
+ 150 0056 80BC     		pop	{r7}
+ 151 0058 7047     		bx	lr
+ 152              		.cfi_endproc
+ 153              	.LFE32:
+ 155 005a 00BF     		.align	2
+ 156              		.global	get_stack_top
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	get_stack_top:
+ 161              	.LFB33:
+  50:../src/syscalls.c **** 
+  51:../src/syscalls.c **** char* get_stack_top(void)
+  52:../src/syscalls.c **** {
+ 162              		.loc 1 52 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 1, uses_anonymous_args = 0
+ 166 005c 80B5     		push	{r7, lr}
+ 167              	.LCFI10:
+ 168              		.cfi_def_cfa_offset 8
+ 169              		.cfi_offset 14, -4
+ 170              		.cfi_offset 7, -8
+ 171 005e 00AF     		add	r7, sp, #0
+ 172              	.LCFI11:
+ 173              		.cfi_def_cfa_register 7
+  53:../src/syscalls.c **** 	return (char*) __get_MSP();
+ 174              		.loc 1 53 0
+ 175 0060 FFF7FEFF 		bl	__get_MSP
+ 176 0064 0346     		mov	r3, r0
+  54:../src/syscalls.c **** 	// return (char*) __get_PSP();
+  55:../src/syscalls.c **** }
+ 177              		.loc 1 55 0
+ 178 0066 1846     		mov	r0, r3
+ 179 0068 80BD     		pop	{r7, pc}
+ 180              		.cfi_endproc
+ 181              	.LFE33:
+ 183 006a 00BF     		.align	2
+ 184              		.global	_sbrk
+ 185              		.thumb
+ 186              		.thumb_func
+ 188              	_sbrk:
+ 189              	.LFB34:
+  56:../src/syscalls.c **** 
+  57:../src/syscalls.c **** caddr_t _sbrk(int incr)
+  58:../src/syscalls.c **** {
+ 190              		.loc 1 58 0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 16
+ 193              		@ frame_needed = 1, uses_anonymous_args = 0
+ 194 006c 90B5     		push	{r4, r7, lr}
+ 195              	.LCFI12:
+ 196              		.cfi_def_cfa_offset 12
+ 197              		.cfi_offset 14, -4
+ 198              		.cfi_offset 7, -8
+ 199              		.cfi_offset 4, -12
+ 200 006e 85B0     		sub	sp, sp, #20
+ 201              	.LCFI13:
+ 202              		.cfi_def_cfa_offset 32
+ 203 0070 00AF     		add	r7, sp, #0
+ 204              	.LCFI14:
+ 205              		.cfi_def_cfa_register 7
+ 206 0072 7860     		str	r0, [r7, #4]
+  59:../src/syscalls.c **** 	char *prev_heap_end;
+  60:../src/syscalls.c **** 	if (heap_end == 0) {
+ 207              		.loc 1 60 0
+ 208 0074 40F20003 		movw	r3, #:lower16:heap_end
+ 209 0078 C0F20003 		movt	r3, #:upper16:heap_end
+ 210 007c 1B68     		ldr	r3, [r3, #0]
+ 211 007e 002B     		cmp	r3, #0
+ 212 0080 08D1     		bne	.L8
+  61:../src/syscalls.c **** 		heap_end = &_end;
+ 213              		.loc 1 61 0
+ 214 0082 40F20003 		movw	r3, #:lower16:heap_end
+ 215 0086 C0F20003 		movt	r3, #:upper16:heap_end
+ 216 008a 40F20002 		movw	r2, #:lower16:_end
+ 217 008e C0F20002 		movt	r2, #:upper16:_end
+ 218 0092 1A60     		str	r2, [r3, #0]
+ 219              	.L8:
+  62:../src/syscalls.c **** 	}
+  63:../src/syscalls.c **** 	prev_heap_end = heap_end;
+ 220              		.loc 1 63 0
+ 221 0094 40F20003 		movw	r3, #:lower16:heap_end
+ 222 0098 C0F20003 		movt	r3, #:upper16:heap_end
+ 223 009c 1B68     		ldr	r3, [r3, #0]
+ 224 009e FB60     		str	r3, [r7, #12]
+  64:../src/syscalls.c **** #if 1
+  65:../src/syscalls.c **** 	if (heap_end + incr > get_stack_top()) {
+ 225              		.loc 1 65 0
+ 226 00a0 40F20003 		movw	r3, #:lower16:heap_end
+ 227 00a4 C0F20003 		movt	r3, #:upper16:heap_end
+ 228 00a8 1A68     		ldr	r2, [r3, #0]
+ 229 00aa 7B68     		ldr	r3, [r7, #4]
+ 230 00ac D418     		adds	r4, r2, r3
+ 231 00ae FFF7FEFF 		bl	get_stack_top
+ 232 00b2 0346     		mov	r3, r0
+ 233 00b4 9C42     		cmp	r4, r3
+ 234 00b6 01D9     		bls	.L9
+  66:../src/syscalls.c **** 		abort();
+ 235              		.loc 1 66 0
+ 236 00b8 FFF7FEFF 		bl	abort
+ 237              	.L9:
+  67:../src/syscalls.c **** 	}
+  68:../src/syscalls.c **** #endif
+  69:../src/syscalls.c **** 	heap_end += incr;
+ 238              		.loc 1 69 0
+ 239 00bc 40F20003 		movw	r3, #:lower16:heap_end
+ 240 00c0 C0F20003 		movt	r3, #:upper16:heap_end
+ 241 00c4 1A68     		ldr	r2, [r3, #0]
+ 242 00c6 7B68     		ldr	r3, [r7, #4]
+ 243 00c8 D218     		adds	r2, r2, r3
+ 244 00ca 40F20003 		movw	r3, #:lower16:heap_end
+ 245 00ce C0F20003 		movt	r3, #:upper16:heap_end
+ 246 00d2 1A60     		str	r2, [r3, #0]
+  70:../src/syscalls.c **** 	return (caddr_t) prev_heap_end;
+ 247              		.loc 1 70 0
+ 248 00d4 FB68     		ldr	r3, [r7, #12]
+  71:../src/syscalls.c **** }
+ 249              		.loc 1 71 0
+ 250 00d6 1846     		mov	r0, r3
+ 251 00d8 07F11407 		add	r7, r7, #20
+ 252 00dc BD46     		mov	sp, r7
+ 253 00de 90BD     		pop	{r4, r7, pc}
+ 254              		.cfi_endproc
+ 255              	.LFE34:
+ 257              		.align	2
+ 258              		.global	_close
+ 259              		.thumb
+ 260              		.thumb_func
+ 262              	_close:
+ 263              	.LFB35:
+  72:../src/syscalls.c **** 
+  73:../src/syscalls.c **** int _close(int file)
+  74:../src/syscalls.c **** {
+ 264              		.loc 1 74 0
+ 265              		.cfi_startproc
+ 266              		@ args = 0, pretend = 0, frame = 8
+ 267              		@ frame_needed = 1, uses_anonymous_args = 0
+ 268              		@ link register save eliminated.
+ 269 00e0 80B4     		push	{r7}
+ 270              	.LCFI15:
+ 271              		.cfi_def_cfa_offset 4
+ 272              		.cfi_offset 7, -4
+ 273 00e2 83B0     		sub	sp, sp, #12
+ 274              	.LCFI16:
+ 275              		.cfi_def_cfa_offset 16
+ 276 00e4 00AF     		add	r7, sp, #0
+ 277              	.LCFI17:
+ 278              		.cfi_def_cfa_register 7
+ 279 00e6 7860     		str	r0, [r7, #4]
+  75:../src/syscalls.c **** 	(void)file; /* avoid warning */
+  76:../src/syscalls.c **** 	return -1;
+ 280              		.loc 1 76 0
+ 281 00e8 4FF0FF33 		mov	r3, #-1
+  77:../src/syscalls.c **** }
+ 282              		.loc 1 77 0
+ 283 00ec 1846     		mov	r0, r3
+ 284 00ee 07F10C07 		add	r7, r7, #12
+ 285 00f2 BD46     		mov	sp, r7
+ 286 00f4 80BC     		pop	{r7}
+ 287 00f6 7047     		bx	lr
+ 288              		.cfi_endproc
+ 289              	.LFE35:
+ 291              		.align	2
+ 292              		.global	_fstat
+ 293              		.thumb
+ 294              		.thumb_func
+ 296              	_fstat:
+ 297              	.LFB36:
+  78:../src/syscalls.c **** 
+  79:../src/syscalls.c **** int _fstat(int file, struct stat *st)
+  80:../src/syscalls.c **** {
+ 298              		.loc 1 80 0
+ 299              		.cfi_startproc
+ 300              		@ args = 0, pretend = 0, frame = 8
+ 301              		@ frame_needed = 1, uses_anonymous_args = 0
+ 302              		@ link register save eliminated.
+ 303 00f8 80B4     		push	{r7}
+ 304              	.LCFI18:
+ 305              		.cfi_def_cfa_offset 4
+ 306              		.cfi_offset 7, -4
+ 307 00fa 83B0     		sub	sp, sp, #12
+ 308              	.LCFI19:
+ 309              		.cfi_def_cfa_offset 16
+ 310 00fc 00AF     		add	r7, sp, #0
+ 311              	.LCFI20:
+ 312              		.cfi_def_cfa_register 7
+ 313 00fe 7860     		str	r0, [r7, #4]
+ 314 0100 3960     		str	r1, [r7, #0]
+  81:../src/syscalls.c **** 	(void)file; /* avoid warning */
+  82:../src/syscalls.c **** 	st->st_mode = S_IFCHR;
+ 315              		.loc 1 82 0
+ 316 0102 3B68     		ldr	r3, [r7, #0]
+ 317 0104 4FF40052 		mov	r2, #8192
+ 318 0108 5A60     		str	r2, [r3, #4]
+  83:../src/syscalls.c **** 	return 0;
+ 319              		.loc 1 83 0
+ 320 010a 4FF00003 		mov	r3, #0
+  84:../src/syscalls.c **** }
+ 321              		.loc 1 84 0
+ 322 010e 1846     		mov	r0, r3
+ 323 0110 07F10C07 		add	r7, r7, #12
+ 324 0114 BD46     		mov	sp, r7
+ 325 0116 80BC     		pop	{r7}
+ 326 0118 7047     		bx	lr
+ 327              		.cfi_endproc
+ 328              	.LFE36:
+ 330 011a 00BF     		.align	2
+ 331              		.global	_lseek
+ 332              		.thumb
+ 333              		.thumb_func
+ 335              	_lseek:
+ 336              	.LFB37:
+  85:../src/syscalls.c **** 
+  86:../src/syscalls.c **** int _lseek(int file, int ptr, int dir) {
+ 337              		.loc 1 86 0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 16
+ 340              		@ frame_needed = 1, uses_anonymous_args = 0
+ 341              		@ link register save eliminated.
+ 342 011c 80B4     		push	{r7}
+ 343              	.LCFI21:
+ 344              		.cfi_def_cfa_offset 4
+ 345              		.cfi_offset 7, -4
+ 346 011e 85B0     		sub	sp, sp, #20
+ 347              	.LCFI22:
+ 348              		.cfi_def_cfa_offset 24
+ 349 0120 00AF     		add	r7, sp, #0
+ 350              	.LCFI23:
+ 351              		.cfi_def_cfa_register 7
+ 352 0122 F860     		str	r0, [r7, #12]
+ 353 0124 B960     		str	r1, [r7, #8]
+ 354 0126 7A60     		str	r2, [r7, #4]
+  87:../src/syscalls.c **** 	(void)file; /* avoid warning */
+  88:../src/syscalls.c **** 	(void)ptr;  /* avoid warning */
+  89:../src/syscalls.c **** 	(void)dir;  /* avoid warning */
+  90:../src/syscalls.c **** 	return 0;
+ 355              		.loc 1 90 0
+ 356 0128 4FF00003 		mov	r3, #0
+  91:../src/syscalls.c **** }
+ 357              		.loc 1 91 0
+ 358 012c 1846     		mov	r0, r3
+ 359 012e 07F11407 		add	r7, r7, #20
+ 360 0132 BD46     		mov	sp, r7
+ 361 0134 80BC     		pop	{r7}
+ 362 0136 7047     		bx	lr
+ 363              		.cfi_endproc
+ 364              	.LFE37:
+ 366              		.align	2
+ 367              		.global	_read
+ 368              		.thumb
+ 369              		.thumb_func
+ 371              	_read:
+ 372              	.LFB38:
+  92:../src/syscalls.c **** 
+  93:../src/syscalls.c **** int _read(int file, char *ptr, int len)
+  94:../src/syscalls.c **** {
+ 373              		.loc 1 94 0
+ 374              		.cfi_startproc
+ 375              		@ args = 0, pretend = 0, frame = 16
+ 376              		@ frame_needed = 1, uses_anonymous_args = 0
+ 377              		@ link register save eliminated.
+ 378 0138 80B4     		push	{r7}
+ 379              	.LCFI24:
+ 380              		.cfi_def_cfa_offset 4
+ 381              		.cfi_offset 7, -4
+ 382 013a 85B0     		sub	sp, sp, #20
+ 383              	.LCFI25:
+ 384              		.cfi_def_cfa_offset 24
+ 385 013c 00AF     		add	r7, sp, #0
+ 386              	.LCFI26:
+ 387              		.cfi_def_cfa_register 7
+ 388 013e F860     		str	r0, [r7, #12]
+ 389 0140 B960     		str	r1, [r7, #8]
+ 390 0142 7A60     		str	r2, [r7, #4]
+  95:../src/syscalls.c **** 	(void)file; /* avoid warning */
+  96:../src/syscalls.c **** 	(void)ptr;  /* avoid warning */
+  97:../src/syscalls.c **** 	(void)len;  /* avoid warning */
+  98:../src/syscalls.c **** 	return 0;
+ 391              		.loc 1 98 0
+ 392 0144 4FF00003 		mov	r3, #0
+  99:../src/syscalls.c **** }
+ 393              		.loc 1 99 0
+ 394 0148 1846     		mov	r0, r3
+ 395 014a 07F11407 		add	r7, r7, #20
+ 396 014e BD46     		mov	sp, r7
+ 397 0150 80BC     		pop	{r7}
+ 398 0152 7047     		bx	lr
+ 399              		.cfi_endproc
+ 400              	.LFE38:
+ 402              		.align	2
+ 403              		.global	_write
+ 404              		.thumb
+ 405              		.thumb_func
+ 407              	_write:
+ 408              	.LFB39:
+ 100:../src/syscalls.c **** 
+ 101:../src/syscalls.c **** int _write(int file, char *ptr, int len)
+ 102:../src/syscalls.c **** {
+ 409              		.loc 1 102 0
+ 410              		.cfi_startproc
+ 411              		@ args = 0, pretend = 0, frame = 24
+ 412              		@ frame_needed = 1, uses_anonymous_args = 0
+ 413              		@ link register save eliminated.
+ 414 0154 80B4     		push	{r7}
+ 415              	.LCFI27:
+ 416              		.cfi_def_cfa_offset 4
+ 417              		.cfi_offset 7, -4
+ 418 0156 87B0     		sub	sp, sp, #28
+ 419              	.LCFI28:
+ 420              		.cfi_def_cfa_offset 32
+ 421 0158 00AF     		add	r7, sp, #0
+ 422              	.LCFI29:
+ 423              		.cfi_def_cfa_register 7
+ 424 015a F860     		str	r0, [r7, #12]
+ 425 015c B960     		str	r1, [r7, #8]
+ 426 015e 7A60     		str	r2, [r7, #4]
+ 103:../src/syscalls.c **** 	int todo;
+ 104:../src/syscalls.c **** 	(void)file; /* avoid warning */
+ 105:../src/syscalls.c **** 	for (todo = 0; todo < len; todo++) {
+ 427              		.loc 1 105 0
+ 428 0160 4FF00003 		mov	r3, #0
+ 429 0164 7B61     		str	r3, [r7, #20]
+ 430 0166 03E0     		b	.L15
+ 431              	.L16:
+ 432              		.loc 1 105 0 is_stmt 0 discriminator 2
+ 433 0168 7B69     		ldr	r3, [r7, #20]
+ 434 016a 03F10103 		add	r3, r3, #1
+ 435 016e 7B61     		str	r3, [r7, #20]
+ 436              	.L15:
+ 437              		.loc 1 105 0 discriminator 1
+ 438 0170 7A69     		ldr	r2, [r7, #20]
+ 439 0172 7B68     		ldr	r3, [r7, #4]
+ 440 0174 9A42     		cmp	r2, r3
+ 441 0176 F7DB     		blt	.L16
+ 106:../src/syscalls.c **** 		// xputc(*ptr++);
+ 107:../src/syscalls.c **** 	}
+ 108:../src/syscalls.c **** 	return len;
+ 442              		.loc 1 108 0 is_stmt 1
+ 443 0178 7B68     		ldr	r3, [r7, #4]
+ 109:../src/syscalls.c **** }
+ 444              		.loc 1 109 0
+ 445 017a 1846     		mov	r0, r3
+ 446 017c 07F11C07 		add	r7, r7, #28
+ 447 0180 BD46     		mov	sp, r7
+ 448 0182 80BC     		pop	{r7}
+ 449 0184 7047     		bx	lr
+ 450              		.cfi_endproc
+ 451              	.LFE39:
+ 453 0186 00BF     		.align	2
+ 454              		.global	_isatty_r
+ 455              		.thumb
+ 456              		.thumb_func
+ 458              	_isatty_r:
+ 459              	.LFB40:
+ 110:../src/syscalls.c **** 
+ 111:../src/syscalls.c **** /*
+ 112:../src/syscalls.c ****  * COPYRIGHT (c) 1989-2009.
+ 113:../src/syscalls.c ****  * On-Line Applications Research Corporation (OAR).
+ 114:../src/syscalls.c ****  *
+ 115:../src/syscalls.c ****  * The license and distribution terms for this file may be
+ 116:../src/syscalls.c ****  * found in the file LICENSE in this distribution or at
+ 117:../src/syscalls.c ****  * http://www.rtems.com/license/LICENSE.
+ 118:../src/syscalls.c ****  */
+ 119:../src/syscalls.c **** 
+ 120:../src/syscalls.c **** #if HAVE_CONFIG_H
+ 121:../src/syscalls.c **** #include "config.h"
+ 122:../src/syscalls.c **** #endif
+ 123:../src/syscalls.c **** 
+ 124:../src/syscalls.c **** /*
+ 125:../src/syscalls.c ****  * _isatty_r
+ 126:../src/syscalls.c ****  *
+ 127:../src/syscalls.c ****  * This is the Newlib dependent reentrant version of isatty().
+ 128:../src/syscalls.c ****  */
+ 129:../src/syscalls.c **** 
+ 130:../src/syscalls.c **** 
+ 131:../src/syscalls.c **** 
+ 132:../src/syscalls.c **** int _isatty_r(
+ 133:../src/syscalls.c **** struct _reent *ptr __attribute__((unused)),
+ 134:../src/syscalls.c **** int fd
+ 135:../src/syscalls.c **** )
+ 136:../src/syscalls.c **** {
+ 460              		.loc 1 136 0
+ 461              		.cfi_startproc
+ 462              		@ args = 0, pretend = 0, frame = 8
+ 463              		@ frame_needed = 1, uses_anonymous_args = 0
+ 464 0188 80B5     		push	{r7, lr}
+ 465              	.LCFI30:
+ 466              		.cfi_def_cfa_offset 8
+ 467              		.cfi_offset 14, -4
+ 468              		.cfi_offset 7, -8
+ 469 018a 82B0     		sub	sp, sp, #8
+ 470              	.LCFI31:
+ 471              		.cfi_def_cfa_offset 16
+ 472 018c 00AF     		add	r7, sp, #0
+ 473              	.LCFI32:
+ 474              		.cfi_def_cfa_register 7
+ 475 018e 7860     		str	r0, [r7, #4]
+ 476 0190 3960     		str	r1, [r7, #0]
+ 137:../src/syscalls.c **** return isatty( fd );
+ 477              		.loc 1 137 0
+ 478 0192 3868     		ldr	r0, [r7, #0]
+ 479 0194 FFF7FEFF 		bl	isatty
+ 480 0198 0346     		mov	r3, r0
+ 138:../src/syscalls.c **** }
+ 481              		.loc 1 138 0
+ 482 019a 1846     		mov	r0, r3
+ 483 019c 07F10807 		add	r7, r7, #8
+ 484 01a0 BD46     		mov	sp, r7
+ 485 01a2 80BD     		pop	{r7, pc}
+ 486              		.cfi_endproc
+ 487              	.LFE40:
+ 489              		.align	2
+ 490              		.global	_isatty
+ 491              		.thumb
+ 492              		.thumb_func
+ 494              	_isatty:
+ 495              	.LFB41:
+ 139:../src/syscalls.c **** 
+ 140:../src/syscalls.c **** int _isatty(int file)
+ 141:../src/syscalls.c **** {
+ 496              		.loc 1 141 0
+ 497              		.cfi_startproc
+ 498              		@ args = 0, pretend = 0, frame = 8
+ 499              		@ frame_needed = 1, uses_anonymous_args = 0
+ 500              		@ link register save eliminated.
+ 501 01a4 80B4     		push	{r7}
+ 502              	.LCFI33:
+ 503              		.cfi_def_cfa_offset 4
+ 504              		.cfi_offset 7, -4
+ 505 01a6 83B0     		sub	sp, sp, #12
+ 506              	.LCFI34:
+ 507              		.cfi_def_cfa_offset 16
+ 508 01a8 00AF     		add	r7, sp, #0
+ 509              	.LCFI35:
+ 510              		.cfi_def_cfa_register 7
+ 511 01aa 7860     		str	r0, [r7, #4]
+ 142:../src/syscalls.c **** 	(void)file; /* avoid warning */
+ 143:../src/syscalls.c **** 	return 1;
+ 512              		.loc 1 143 0
+ 513 01ac 4FF00103 		mov	r3, #1
+ 144:../src/syscalls.c **** }
+ 514              		.loc 1 144 0
+ 515 01b0 1846     		mov	r0, r3
+ 516 01b2 07F10C07 		add	r7, r7, #12
+ 517 01b6 BD46     		mov	sp, r7
+ 518 01b8 80BC     		pop	{r7}
+ 519 01ba 7047     		bx	lr
+ 520              		.cfi_endproc
+ 521              	.LFE41:
+ 523              	.Letext0:
+ 524              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 525              		.file 3 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 526              		.file 4 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 527              		.file 5 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 528              		.file 6 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 529              		.file 7 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 530              		.file 8 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 531              		.file 9 "D:\\CORTEX\\F1_GlowingPainting\\Libraries\\CMSIS\\CM3\\CoreSupport/core_cm3.h"
+ 532              		.file 10 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib
+DEFINED SYMBOLS
+                            *ABS*:00000000 syscalls.c
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:18     .text:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:23     .text:00000000 _kill
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:64     .text:00000028 _exit
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:93     .text:00000034 _getpid
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:118    .bss.heap_end:00000000 $d
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:121    .bss.heap_end:00000000 heap_end
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:129    .text:00000044 get_heap_end
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:160    .text:0000005c get_stack_top
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:188    .text:0000006c _sbrk
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:262    .text:000000e0 _close
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:296    .text:000000f8 _fstat
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:335    .text:0000011c _lseek
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:371    .text:00000138 _read
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:407    .text:00000154 _write
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:458    .text:00000188 _isatty_r
+C:\Users\Peter\AppData\Local\Temp\ccl1YPWq.s:494    .text:000001a4 _isatty
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+errno
+__get_MSP
+_end
+abort
+isatty
