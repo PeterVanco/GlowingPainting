@@ -51,15 +51,6 @@ int main(void) {
 	NVIC_Configuration();
 	PERIPH_Configuration();
 
-	/*
-	SetColor(0xFF, 0, 0);
-	Delay(0x3FFFFF);
-	SetColor(0, 0xFF, 0);
-	Delay(0x3FFFFF);
-	SetColor(0, 0, 0xFF);
-	Delay(0x3FFFFF);
-	*/
-
 	uint32_t r;
 
 	#define _DELAY	0x5FFF
@@ -89,37 +80,6 @@ int main(void) {
 		Delay(0x8fff);
 	}
 
-	while (1) {
-		for (r = 0; r < 0xFF; r++) {
-			SetColor(0xFF, r, 0);
-			Delay(_DELAY);
-		}
-
-		for (r = 0xFF; r > 0; r--) {
-			SetColor(r, 0xFF, 0);
-			Delay(_DELAY);
-		}
-
-		for (r = 0; r < 0xFF; r++) {
-			SetColor(0, 0xFF, r);
-			Delay(_DELAY);
-		}
-
-		for (r = 0xFF; r > 0; r--) {
-			SetColor(0, r, 0xFF);
-			Delay(_DELAY);
-		}
-
-		for (r = 0; r < 0xFF; r++) {
-			SetColor(r, 0, 0xFF);
-			Delay(_DELAY);
-		}
-
-		for (r = 0xFF; r > 0; r--) {
-			SetColor(0xFF, 0, r);
-			Delay(_DELAY);
-		}
-	}
 }
 
 void NVIC_Configuration(void) {
@@ -129,9 +89,7 @@ void NVIC_Configuration(void) {
 
 void RCC_Configuration(void) {
 
-	RCC_APB2PeriphClockCmd(
-			RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO | RCC_APB2Periph_TIM1,
-			ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO | RCC_APB2Periph_TIM1, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM2, ENABLE);
 }
 
@@ -186,8 +144,7 @@ void PERIPH_Configuration(void) {
 	TIM_CtrlPWMOutputs(TIM3, ENABLE);
 }
 
-void __assert_func(const char *file, int line, const char *func,
-		const char *failedexpr) {
+void __assert_func(const char *file, int line, const char *func, const char *failedexpr) {
 	while (1) {
 	}
 }

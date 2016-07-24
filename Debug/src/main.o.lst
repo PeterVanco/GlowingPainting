@@ -283,25 +283,16 @@
  237              		.loc 1 52 0
  238 00fc FFF7FEFF 		bl	_Z20PERIPH_Configurationv
   53:../src/main.cc **** 
-  54:../src/main.cc **** 	/*
-  55:../src/main.cc **** 	SetColor(0xFF, 0, 0);
-  56:../src/main.cc **** 	Delay(0x3FFFFF);
-  57:../src/main.cc **** 	SetColor(0, 0xFF, 0);
-  58:../src/main.cc **** 	Delay(0x3FFFFF);
-  59:../src/main.cc **** 	SetColor(0, 0, 0xFF);
-  60:../src/main.cc **** 	Delay(0x3FFFFF);
-  61:../src/main.cc **** 	*/
-  62:../src/main.cc **** 
-  63:../src/main.cc **** 	uint32_t r;
-  64:../src/main.cc **** 
-  65:../src/main.cc **** 	#define _DELAY	0x5FFF
-  66:../src/main.cc **** 
-  67:../src/main.cc **** 	#define STEP			0x1f
-  68:../src/main.cc **** 	#define MIN_INTENSITY	0x2f
-  69:../src/main.cc **** 	#define MAX_INTENSITY	0x5f
-  70:../src/main.cc **** 
-  71:../src/main.cc **** 	uint16_t last1 = rand() % 0xff;
- 239              		.loc 1 71 0
+  54:../src/main.cc **** 	uint32_t r;
+  55:../src/main.cc **** 
+  56:../src/main.cc **** 	#define _DELAY	0x5FFF
+  57:../src/main.cc **** 
+  58:../src/main.cc **** 	#define STEP			0x1f
+  59:../src/main.cc **** 	#define MIN_INTENSITY	0x2f
+  60:../src/main.cc **** 	#define MAX_INTENSITY	0x5f
+  61:../src/main.cc **** 
+  62:../src/main.cc **** 	uint16_t last1 = rand() % 0xff;
+ 239              		.loc 1 62 0
  240 0100 FFF7FEFF 		bl	rand
  241 0104 0146     		mov	r1, r0
  242 0106 48F28103 		movw	r3, #32897
@@ -317,8 +308,8 @@
  252 0126 CA1A     		subs	r2, r1, r3
  253 0128 1346     		mov	r3, r2	@ movhi
  254 012a FB81     		strh	r3, [r7, #14]	@ movhi
-  72:../src/main.cc **** 	uint16_t last2 = rand() % 0xff;
- 255              		.loc 1 72 0
+  63:../src/main.cc **** 	uint16_t last2 = rand() % 0xff;
+ 255              		.loc 1 63 0
  256 012c FFF7FEFF 		bl	rand
  257 0130 0146     		mov	r1, r0
  258 0132 48F28103 		movw	r3, #32897
@@ -334,8 +325,8 @@
  268 0152 CA1A     		subs	r2, r1, r3
  269 0154 1346     		mov	r3, r2	@ movhi
  270 0156 BB81     		strh	r3, [r7, #12]	@ movhi
-  73:../src/main.cc **** 	uint16_t last3 = rand() % 0xff;
- 271              		.loc 1 73 0
+  64:../src/main.cc **** 	uint16_t last3 = rand() % 0xff;
+ 271              		.loc 1 64 0
  272 0158 FFF7FEFF 		bl	rand
  273 015c 0146     		mov	r1, r0
  274 015e 48F28103 		movw	r3, #32897
@@ -352,10 +343,10 @@
  285 0180 1346     		mov	r3, r2	@ movhi
  286 0182 7B81     		strh	r3, [r7, #10]	@ movhi
  287              	.L6:
-  74:../src/main.cc **** 
-  75:../src/main.cc **** 	while (1) {
-  76:../src/main.cc **** 		last1 += (rand() % STEP) - (STEP / 2);
- 288              		.loc 1 76 0 discriminator 1
+  65:../src/main.cc **** 
+  66:../src/main.cc **** 	while (1) {
+  67:../src/main.cc **** 		last1 += (rand() % STEP) - (STEP / 2);
+ 288              		.loc 1 67 0 discriminator 1
  289 0184 FFF7FEFF 		bl	rand
  290 0188 0146     		mov	r1, r0
  291 018a 40F64303 		movw	r3, #2115
@@ -375,8 +366,8 @@
  305 01b2 9BB2     		uxth	r3, r3
  306 01b4 A3F10F03 		sub	r3, r3, #15
  307 01b8 FB81     		strh	r3, [r7, #14]	@ movhi
-  77:../src/main.cc **** 		last2 += (rand() % STEP) - (STEP / 2);
- 308              		.loc 1 77 0 discriminator 1
+  68:../src/main.cc **** 		last2 += (rand() % STEP) - (STEP / 2);
+ 308              		.loc 1 68 0 discriminator 1
  309 01ba FFF7FEFF 		bl	rand
  310 01be 0146     		mov	r1, r0
  311 01c0 40F64303 		movw	r3, #2115
@@ -396,8 +387,8 @@
  325 01e8 9BB2     		uxth	r3, r3
  326 01ea A3F10F03 		sub	r3, r3, #15
  327 01ee BB81     		strh	r3, [r7, #12]	@ movhi
-  78:../src/main.cc **** 		last3 += (rand() % STEP) - (STEP / 2);
- 328              		.loc 1 78 0 discriminator 1
+  69:../src/main.cc **** 		last3 += (rand() % STEP) - (STEP / 2);
+ 328              		.loc 1 69 0 discriminator 1
  329 01f0 FFF7FEFF 		bl	rand
  330 01f4 0146     		mov	r1, r0
  331 01f6 40F64303 		movw	r3, #2115
@@ -417,53 +408,53 @@
  345 021e 9BB2     		uxth	r3, r3
  346 0220 A3F10F03 		sub	r3, r3, #15
  347 0224 7B81     		strh	r3, [r7, #10]	@ movhi
-  79:../src/main.cc **** 
-  80:../src/main.cc **** 		last1 = last1 > MAX_INTENSITY ? MAX_INTENSITY : last1;
- 348              		.loc 1 80 0 discriminator 1
+  70:../src/main.cc **** 
+  71:../src/main.cc **** 		last1 = last1 > MAX_INTENSITY ? MAX_INTENSITY : last1;
+ 348              		.loc 1 71 0 discriminator 1
  349 0226 FB89     		ldrh	r3, [r7, #14]
  350 0228 5F2B     		cmp	r3, #95
  351 022a 28BF     		it	cs
  352 022c 5F23     		movcs	r3, #95
  353 022e FB81     		strh	r3, [r7, #14]	@ movhi
-  81:../src/main.cc **** 		last2 = last2 > MAX_INTENSITY ? MAX_INTENSITY : last2;
- 354              		.loc 1 81 0 discriminator 1
+  72:../src/main.cc **** 		last2 = last2 > MAX_INTENSITY ? MAX_INTENSITY : last2;
+ 354              		.loc 1 72 0 discriminator 1
  355 0230 BB89     		ldrh	r3, [r7, #12]
  356 0232 5F2B     		cmp	r3, #95
  357 0234 28BF     		it	cs
  358 0236 5F23     		movcs	r3, #95
  359 0238 BB81     		strh	r3, [r7, #12]	@ movhi
-  82:../src/main.cc **** 		last3 = last3 > MAX_INTENSITY ? MAX_INTENSITY : last3;
- 360              		.loc 1 82 0 discriminator 1
+  73:../src/main.cc **** 		last3 = last3 > MAX_INTENSITY ? MAX_INTENSITY : last3;
+ 360              		.loc 1 73 0 discriminator 1
  361 023a 7B89     		ldrh	r3, [r7, #10]
  362 023c 5F2B     		cmp	r3, #95
  363 023e 28BF     		it	cs
  364 0240 5F23     		movcs	r3, #95
  365 0242 7B81     		strh	r3, [r7, #10]	@ movhi
-  83:../src/main.cc **** 
-  84:../src/main.cc **** 		last1 = last1 < MIN_INTENSITY ? MIN_INTENSITY : last1;
- 366              		.loc 1 84 0 discriminator 1
+  74:../src/main.cc **** 
+  75:../src/main.cc **** 		last1 = last1 < MIN_INTENSITY ? MIN_INTENSITY : last1;
+ 366              		.loc 1 75 0 discriminator 1
  367 0244 FB89     		ldrh	r3, [r7, #14]
  368 0246 2F2B     		cmp	r3, #47
  369 0248 38BF     		it	cc
  370 024a 2F23     		movcc	r3, #47
  371 024c FB81     		strh	r3, [r7, #14]	@ movhi
-  85:../src/main.cc **** 		last2 = last2 < MIN_INTENSITY ? MIN_INTENSITY : last2;
- 372              		.loc 1 85 0 discriminator 1
+  76:../src/main.cc **** 		last2 = last2 < MIN_INTENSITY ? MIN_INTENSITY : last2;
+ 372              		.loc 1 76 0 discriminator 1
  373 024e BB89     		ldrh	r3, [r7, #12]
  374 0250 2F2B     		cmp	r3, #47
  375 0252 38BF     		it	cc
  376 0254 2F23     		movcc	r3, #47
  377 0256 BB81     		strh	r3, [r7, #12]	@ movhi
-  86:../src/main.cc **** 		last3 = last3 < MIN_INTENSITY ? MIN_INTENSITY : last3;
- 378              		.loc 1 86 0 discriminator 1
+  77:../src/main.cc **** 		last3 = last3 < MIN_INTENSITY ? MIN_INTENSITY : last3;
+ 378              		.loc 1 77 0 discriminator 1
  379 0258 7B89     		ldrh	r3, [r7, #10]
  380 025a 2F2B     		cmp	r3, #47
  381 025c 38BF     		it	cc
  382 025e 2F23     		movcc	r3, #47
  383 0260 7B81     		strh	r3, [r7, #10]	@ movhi
-  87:../src/main.cc **** 
-  88:../src/main.cc **** 		SetColor(last1, last2, last3);
- 384              		.loc 1 88 0 discriminator 1
+  78:../src/main.cc **** 
+  79:../src/main.cc **** 		SetColor(last1, last2, last3);
+ 384              		.loc 1 79 0 discriminator 1
  385 0262 F989     		ldrh	r1, [r7, #14]
  386 0264 BA89     		ldrh	r2, [r7, #12]
  387 0266 7B89     		ldrh	r3, [r7, #10]
@@ -471,12 +462,12 @@
  389 026a 1146     		mov	r1, r2
  390 026c 1A46     		mov	r2, r3
  391 026e FFF7FEFF 		bl	_Z8SetColormmm
-  89:../src/main.cc **** 		Delay(0x8fff);
- 392              		.loc 1 89 0 discriminator 1
+  80:../src/main.cc **** 		Delay(0x8fff);
+ 392              		.loc 1 80 0 discriminator 1
  393 0272 48F6FF70 		movw	r0, #36863
  394 0276 FFF7FEFF 		bl	_Z5Delaym
-  75:../src/main.cc **** 	while (1) {
- 395              		.loc 1 75 0 discriminator 1
+  66:../src/main.cc **** 	while (1) {
+ 395              		.loc 1 66 0 discriminator 1
  396 027a 83E7     		b	.L6
  397              	.LBE2:
  398              		.cfi_endproc
@@ -487,43 +478,12 @@
  404              		.thumb_func
  406              	_Z18NVIC_Configurationv:
  407              	.LFB33:
-  90:../src/main.cc **** 	}
-  91:../src/main.cc **** 
-  92:../src/main.cc **** 	while (1) {
-  93:../src/main.cc **** 		for (r = 0; r < 0xFF; r++) {
-  94:../src/main.cc **** 			SetColor(0xFF, r, 0);
-  95:../src/main.cc **** 			Delay(_DELAY);
-  96:../src/main.cc **** 		}
-  97:../src/main.cc **** 
-  98:../src/main.cc **** 		for (r = 0xFF; r > 0; r--) {
-  99:../src/main.cc **** 			SetColor(r, 0xFF, 0);
- 100:../src/main.cc **** 			Delay(_DELAY);
- 101:../src/main.cc **** 		}
- 102:../src/main.cc **** 
- 103:../src/main.cc **** 		for (r = 0; r < 0xFF; r++) {
- 104:../src/main.cc **** 			SetColor(0, 0xFF, r);
- 105:../src/main.cc **** 			Delay(_DELAY);
- 106:../src/main.cc **** 		}
- 107:../src/main.cc **** 
- 108:../src/main.cc **** 		for (r = 0xFF; r > 0; r--) {
- 109:../src/main.cc **** 			SetColor(0, r, 0xFF);
- 110:../src/main.cc **** 			Delay(_DELAY);
- 111:../src/main.cc **** 		}
- 112:../src/main.cc **** 
- 113:../src/main.cc **** 		for (r = 0; r < 0xFF; r++) {
- 114:../src/main.cc **** 			SetColor(r, 0, 0xFF);
- 115:../src/main.cc **** 			Delay(_DELAY);
- 116:../src/main.cc **** 		}
- 117:../src/main.cc **** 
- 118:../src/main.cc **** 		for (r = 0xFF; r > 0; r--) {
- 119:../src/main.cc **** 			SetColor(0xFF, 0, r);
- 120:../src/main.cc **** 			Delay(_DELAY);
- 121:../src/main.cc **** 		}
- 122:../src/main.cc **** 	}
- 123:../src/main.cc **** }
- 124:../src/main.cc **** 
- 125:../src/main.cc **** void NVIC_Configuration(void) {
- 408              		.loc 1 125 0
+  81:../src/main.cc **** 	}
+  82:../src/main.cc **** 
+  83:../src/main.cc **** }
+  84:../src/main.cc **** 
+  85:../src/main.cc **** void NVIC_Configuration(void) {
+ 408              		.loc 1 85 0
  409              		.cfi_startproc
  410              		@ args = 0, pretend = 0, frame = 0
  411              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -535,10 +495,10 @@
  417 027e 00AF     		add	r7, sp, #0
  418              	.LCFI13:
  419              		.cfi_def_cfa_register 7
- 126:../src/main.cc **** 	//NVIC_InitTypeDef NVIC_InitStructure;
- 127:../src/main.cc **** 
- 128:../src/main.cc **** }
- 420              		.loc 1 128 0
+  86:../src/main.cc **** 	//NVIC_InitTypeDef NVIC_InitStructure;
+  87:../src/main.cc **** 
+  88:../src/main.cc **** }
+ 420              		.loc 1 88 0
  421 0280 BD46     		mov	sp, r7
  422 0282 80BC     		pop	{r7}
  423 0284 7047     		bx	lr
@@ -550,9 +510,9 @@
  430              		.thumb_func
  432              	_Z17RCC_Configurationv:
  433              	.LFB34:
- 129:../src/main.cc **** 
- 130:../src/main.cc **** void RCC_Configuration(void) {
- 434              		.loc 1 130 0
+  89:../src/main.cc **** 
+  90:../src/main.cc **** void RCC_Configuration(void) {
+ 434              		.loc 1 90 0
  435              		.cfi_startproc
  436              		@ args = 0, pretend = 0, frame = 0
  437              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -564,21 +524,19 @@
  443 028a 00AF     		add	r7, sp, #0
  444              	.LCFI15:
  445              		.cfi_def_cfa_register 7
- 131:../src/main.cc **** 
- 132:../src/main.cc **** 	RCC_APB2PeriphClockCmd(
- 133:../src/main.cc **** 			RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO | RCC_APB2Periph_TIM1,
- 134:../src/main.cc **** 			ENABLE);
- 446              		.loc 1 134 0
+  91:../src/main.cc **** 
+  92:../src/main.cc **** 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO | RCC_APB
+ 446              		.loc 1 92 0
  447 028c 40F60D00 		movw	r0, #2061
  448 0290 4FF00101 		mov	r1, #1
  449 0294 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
- 135:../src/main.cc **** 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM2, ENABLE);
- 450              		.loc 1 135 0
+  93:../src/main.cc **** 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM2, ENABLE);
+ 450              		.loc 1 93 0
  451 0298 4FF00300 		mov	r0, #3
  452 029c 4FF00101 		mov	r1, #1
  453 02a0 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
- 136:../src/main.cc **** }
- 454              		.loc 1 136 0
+  94:../src/main.cc **** }
+ 454              		.loc 1 94 0
  455 02a4 80BD     		pop	{r7, pc}
  456              		.cfi_endproc
  457              	.LFE34:
@@ -588,9 +546,9 @@
  462              		.thumb_func
  464              	_Z18GPIO_Configurationv:
  465              	.LFB35:
- 137:../src/main.cc **** 
- 138:../src/main.cc **** void GPIO_Configuration(void) {
- 466              		.loc 1 138 0
+  95:../src/main.cc **** 
+  96:../src/main.cc **** void GPIO_Configuration(void) {
+ 466              		.loc 1 96 0
  467              		.cfi_startproc
  468              		@ args = 0, pretend = 0, frame = 8
  469              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -606,27 +564,27 @@
  479              	.LCFI18:
  480              		.cfi_def_cfa_register 7
  481              	.LBB3:
- 139:../src/main.cc **** 
- 140:../src/main.cc **** 	GPIO_InitTypeDef GPIO_InitStructure;
- 141:../src/main.cc **** 
- 142:../src/main.cc **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
- 482              		.loc 1 142 0
+  97:../src/main.cc **** 
+  98:../src/main.cc **** 	GPIO_InitTypeDef GPIO_InitStructure;
+  99:../src/main.cc **** 
+ 100:../src/main.cc **** 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+ 482              		.loc 1 100 0
  483 02ae 4FF00103 		mov	r3, #1
  484 02b2 BB80     		strh	r3, [r7, #4]	@ movhi
- 143:../src/main.cc **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
- 485              		.loc 1 143 0
+ 101:../src/main.cc **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+ 485              		.loc 1 101 0
  486 02b4 4FF04803 		mov	r3, #72
  487 02b8 FB71     		strb	r3, [r7, #7]
- 144:../src/main.cc **** 	GPIO_Init(GPIOA, &GPIO_InitStructure);
- 488              		.loc 1 144 0
+ 102:../src/main.cc **** 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 488              		.loc 1 102 0
  489 02ba 4FF40060 		mov	r0, #2048
  490 02be C4F20100 		movt	r0, 16385
  491 02c2 07F10403 		add	r3, r7, #4
  492 02c6 1946     		mov	r1, r3
  493 02c8 FFF7FEFF 		bl	GPIO_Init
- 145:../src/main.cc **** 
- 146:../src/main.cc **** 	if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0 ) == Bit_SET) {
- 494              		.loc 1 146 0
+ 103:../src/main.cc **** 
+ 104:../src/main.cc **** 	if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0 ) == Bit_SET) {
+ 494              		.loc 1 104 0
  495 02cc 4FF40060 		mov	r0, #2048
  496 02d0 C4F20100 		movt	r0, 16385
  497 02d4 4FF00101 		mov	r1, #1
@@ -639,49 +597,49 @@
  504 02e6 DBB2     		uxtb	r3, r3
  505 02e8 002B     		cmp	r3, #0
  506 02ea 29D0     		beq	.L9
- 147:../src/main.cc **** 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
- 507              		.loc 1 147 0
+ 105:../src/main.cc **** 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
+ 507              		.loc 1 105 0
  508 02ec 4FF03803 		mov	r3, #56
  509 02f0 BB80     		strh	r3, [r7, #4]	@ movhi
- 148:../src/main.cc **** 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
- 510              		.loc 1 148 0
+ 106:../src/main.cc **** 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+ 510              		.loc 1 106 0
  511 02f2 4FF01803 		mov	r3, #24
  512 02f6 FB71     		strb	r3, [r7, #7]
- 149:../src/main.cc **** 		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 513              		.loc 1 149 0
+ 107:../src/main.cc **** 		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 513              		.loc 1 107 0
  514 02f8 4FF00303 		mov	r3, #3
  515 02fc BB71     		strb	r3, [r7, #6]
- 150:../src/main.cc **** 		GPIO_Init(GPIOB, &GPIO_InitStructure);
- 516              		.loc 1 150 0
+ 108:../src/main.cc **** 		GPIO_Init(GPIOB, &GPIO_InitStructure);
+ 516              		.loc 1 108 0
  517 02fe 4FF44060 		mov	r0, #3072
  518 0302 C4F20100 		movt	r0, 16385
  519 0306 07F10403 		add	r3, r7, #4
  520 030a 1946     		mov	r1, r3
  521 030c FFF7FEFF 		bl	GPIO_Init
- 151:../src/main.cc **** 
- 152:../src/main.cc **** 		GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
- 522              		.loc 1 152 0
+ 109:../src/main.cc **** 
+ 110:../src/main.cc **** 		GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+ 522              		.loc 1 110 0
  523 0310 4FF40070 		mov	r0, #512
  524 0314 C0F23000 		movt	r0, 48
  525 0318 4FF00101 		mov	r1, #1
  526 031c FFF7FEFF 		bl	GPIO_PinRemapConfig
- 153:../src/main.cc **** 		GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);
- 527              		.loc 1 153 0
+ 111:../src/main.cc **** 		GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);
+ 527              		.loc 1 111 0
  528 0320 4FF48070 		mov	r0, #256
  529 0324 C0F21800 		movt	r0, 24
  530 0328 4FF00101 		mov	r1, #1
  531 032c FFF7FEFF 		bl	GPIO_PinRemapConfig
- 154:../src/main.cc **** 		GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE);
- 532              		.loc 1 154 0
+ 112:../src/main.cc **** 		GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE);
+ 532              		.loc 1 112 0
  533 0330 4FF40060 		mov	r0, #2048
  534 0334 C0F21A00 		movt	r0, 26
  535 0338 4FF00101 		mov	r1, #1
  536 033c FFF7FEFF 		bl	GPIO_PinRemapConfig
  537              	.L9:
  538              	.LBE3:
- 155:../src/main.cc **** 	}
- 156:../src/main.cc **** }
- 539              		.loc 1 156 0
+ 113:../src/main.cc **** 	}
+ 114:../src/main.cc **** }
+ 539              		.loc 1 114 0
  540 0340 07F10807 		add	r7, r7, #8
  541 0344 BD46     		mov	sp, r7
  542 0346 80BD     		pop	{r7, pc}
@@ -693,11 +651,11 @@
  549              		.thumb_func
  551              	_Z20PERIPH_Configurationv:
  552              	.LFB36:
- 157:../src/main.cc **** 
- 158:../src/main.cc **** // TIM3-3, TIM3-4, TIM1-1
- 159:../src/main.cc **** 
- 160:../src/main.cc **** void PERIPH_Configuration(void) {
- 553              		.loc 1 160 0
+ 115:../src/main.cc **** 
+ 116:../src/main.cc **** // TIM3-3, TIM3-4, TIM1-1
+ 117:../src/main.cc **** 
+ 118:../src/main.cc **** void PERIPH_Configuration(void) {
+ 553              		.loc 1 118 0
  554              		.cfi_startproc
  555              		@ args = 0, pretend = 0, frame = 0
  556              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -709,133 +667,133 @@
  562 034a 00AF     		add	r7, sp, #0
  563              	.LCFI20:
  564              		.cfi_def_cfa_register 7
- 161:../src/main.cc **** 
- 162:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_Period = 0xFF;
- 565              		.loc 1 162 0
+ 119:../src/main.cc **** 
+ 120:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_Period = 0xFF;
+ 565              		.loc 1 120 0
  566 034c 40F20003 		movw	r3, #:lower16:TIM_TimeBaseStructure
  567 0350 C0F20003 		movt	r3, #:upper16:TIM_TimeBaseStructure
  568 0354 4FF0FF02 		mov	r2, #255
  569 0358 9A80     		strh	r2, [r3, #4]	@ movhi
- 163:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_Prescaler = 0;
- 570              		.loc 1 163 0
+ 121:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_Prescaler = 0;
+ 570              		.loc 1 121 0
  571 035a 40F20003 		movw	r3, #:lower16:TIM_TimeBaseStructure
  572 035e C0F20003 		movt	r3, #:upper16:TIM_TimeBaseStructure
  573 0362 4FF00002 		mov	r2, #0
  574 0366 1A80     		strh	r2, [r3, #0]	@ movhi
- 164:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
- 575              		.loc 1 164 0
+ 122:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+ 575              		.loc 1 122 0
  576 0368 40F20003 		movw	r3, #:lower16:TIM_TimeBaseStructure
  577 036c C0F20003 		movt	r3, #:upper16:TIM_TimeBaseStructure
  578 0370 4FF00002 		mov	r2, #0
  579 0374 DA80     		strh	r2, [r3, #6]	@ movhi
- 165:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_CenterAligned3;
- 580              		.loc 1 165 0
+ 123:../src/main.cc **** 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_CenterAligned3;
+ 580              		.loc 1 123 0
  581 0376 40F20003 		movw	r3, #:lower16:TIM_TimeBaseStructure
  582 037a C0F20003 		movt	r3, #:upper16:TIM_TimeBaseStructure
  583 037e 4FF06002 		mov	r2, #96
  584 0382 5A80     		strh	r2, [r3, #2]	@ movhi
- 166:../src/main.cc **** 
- 167:../src/main.cc **** 	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
- 585              		.loc 1 167 0
+ 124:../src/main.cc **** 
+ 125:../src/main.cc **** 	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+ 585              		.loc 1 125 0
  586 0384 4FF43050 		mov	r0, #11264
  587 0388 C4F20100 		movt	r0, 16385
  588 038c 40F20001 		movw	r1, #:lower16:TIM_TimeBaseStructure
  589 0390 C0F20001 		movt	r1, #:upper16:TIM_TimeBaseStructure
  590 0394 FFF7FEFF 		bl	TIM_TimeBaseInit
- 168:../src/main.cc **** 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
- 591              		.loc 1 168 0
+ 126:../src/main.cc **** 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+ 591              		.loc 1 126 0
  592 0398 4FF08040 		mov	r0, #1073741824
  593 039c 40F20001 		movw	r1, #:lower16:TIM_TimeBaseStructure
  594 03a0 C0F20001 		movt	r1, #:upper16:TIM_TimeBaseStructure
  595 03a4 FFF7FEFF 		bl	TIM_TimeBaseInit
- 169:../src/main.cc **** 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
- 596              		.loc 1 169 0
+ 127:../src/main.cc **** 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+ 596              		.loc 1 127 0
  597 03a8 4FF48060 		mov	r0, #1024
  598 03ac C4F20000 		movt	r0, 16384
  599 03b0 40F20001 		movw	r1, #:lower16:TIM_TimeBaseStructure
  600 03b4 C0F20001 		movt	r1, #:upper16:TIM_TimeBaseStructure
  601 03b8 FFF7FEFF 		bl	TIM_TimeBaseInit
- 170:../src/main.cc **** 
- 171:../src/main.cc **** 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
- 602              		.loc 1 171 0
+ 128:../src/main.cc **** 
+ 129:../src/main.cc **** 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+ 602              		.loc 1 129 0
  603 03bc 40F20003 		movw	r3, #:lower16:TIM_OCInitStructure
  604 03c0 C0F20003 		movt	r3, #:upper16:TIM_OCInitStructure
  605 03c4 4FF06002 		mov	r2, #96
  606 03c8 1A80     		strh	r2, [r3, #0]	@ movhi
- 172:../src/main.cc **** 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
- 607              		.loc 1 172 0
+ 130:../src/main.cc **** 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+ 607              		.loc 1 130 0
  608 03ca 40F20003 		movw	r3, #:lower16:TIM_OCInitStructure
  609 03ce C0F20003 		movt	r3, #:upper16:TIM_OCInitStructure
  610 03d2 4FF00102 		mov	r2, #1
  611 03d6 5A80     		strh	r2, [r3, #2]	@ movhi
- 173:../src/main.cc **** 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
- 612              		.loc 1 173 0
+ 131:../src/main.cc **** 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+ 612              		.loc 1 131 0
  613 03d8 40F20003 		movw	r3, #:lower16:TIM_OCInitStructure
  614 03dc C0F20003 		movt	r3, #:upper16:TIM_OCInitStructure
  615 03e0 4FF00002 		mov	r2, #0
  616 03e4 1A81     		strh	r2, [r3, #8]	@ movhi
- 174:../src/main.cc **** 	TIM_OCInitStructure.TIM_Pulse = TIM_OCPolarity_High;
- 617              		.loc 1 174 0
+ 132:../src/main.cc **** 	TIM_OCInitStructure.TIM_Pulse = TIM_OCPolarity_High;
+ 617              		.loc 1 132 0
  618 03e6 40F20003 		movw	r3, #:lower16:TIM_OCInitStructure
  619 03ea C0F20003 		movt	r3, #:upper16:TIM_OCInitStructure
  620 03ee 4FF00002 		mov	r2, #0
  621 03f2 DA80     		strh	r2, [r3, #6]	@ movhi
- 175:../src/main.cc **** 
- 176:../src/main.cc **** 	TIM_ARRPreloadConfig(TIM1, ENABLE);
- 622              		.loc 1 176 0
+ 133:../src/main.cc **** 
+ 134:../src/main.cc **** 	TIM_ARRPreloadConfig(TIM1, ENABLE);
+ 622              		.loc 1 134 0
  623 03f4 4FF43050 		mov	r0, #11264
  624 03f8 C4F20100 		movt	r0, 16385
  625 03fc 4FF00101 		mov	r1, #1
  626 0400 FFF7FEFF 		bl	TIM_ARRPreloadConfig
- 177:../src/main.cc **** 	TIM_ARRPreloadConfig(TIM2, ENABLE);
- 627              		.loc 1 177 0
+ 135:../src/main.cc **** 	TIM_ARRPreloadConfig(TIM2, ENABLE);
+ 627              		.loc 1 135 0
  628 0404 4FF08040 		mov	r0, #1073741824
  629 0408 4FF00101 		mov	r1, #1
  630 040c FFF7FEFF 		bl	TIM_ARRPreloadConfig
- 178:../src/main.cc **** 	TIM_ARRPreloadConfig(TIM3, ENABLE);
- 631              		.loc 1 178 0
+ 136:../src/main.cc **** 	TIM_ARRPreloadConfig(TIM3, ENABLE);
+ 631              		.loc 1 136 0
  632 0410 4FF48060 		mov	r0, #1024
  633 0414 C4F20000 		movt	r0, 16384
  634 0418 4FF00101 		mov	r1, #1
  635 041c FFF7FEFF 		bl	TIM_ARRPreloadConfig
- 179:../src/main.cc **** 
- 180:../src/main.cc **** 	TIM_Cmd(TIM1, ENABLE);
- 636              		.loc 1 180 0
+ 137:../src/main.cc **** 
+ 138:../src/main.cc **** 	TIM_Cmd(TIM1, ENABLE);
+ 636              		.loc 1 138 0
  637 0420 4FF43050 		mov	r0, #11264
  638 0424 C4F20100 		movt	r0, 16385
  639 0428 4FF00101 		mov	r1, #1
  640 042c FFF7FEFF 		bl	TIM_Cmd
- 181:../src/main.cc **** 	TIM_Cmd(TIM2, ENABLE);
- 641              		.loc 1 181 0
+ 139:../src/main.cc **** 	TIM_Cmd(TIM2, ENABLE);
+ 641              		.loc 1 139 0
  642 0430 4FF08040 		mov	r0, #1073741824
  643 0434 4FF00101 		mov	r1, #1
  644 0438 FFF7FEFF 		bl	TIM_Cmd
- 182:../src/main.cc **** 	TIM_Cmd(TIM3, ENABLE);
- 645              		.loc 1 182 0
+ 140:../src/main.cc **** 	TIM_Cmd(TIM3, ENABLE);
+ 645              		.loc 1 140 0
  646 043c 4FF48060 		mov	r0, #1024
  647 0440 C4F20000 		movt	r0, 16384
  648 0444 4FF00101 		mov	r1, #1
  649 0448 FFF7FEFF 		bl	TIM_Cmd
- 183:../src/main.cc **** 
- 184:../src/main.cc **** 	TIM_CtrlPWMOutputs(TIM1, ENABLE);
- 650              		.loc 1 184 0
+ 141:../src/main.cc **** 
+ 142:../src/main.cc **** 	TIM_CtrlPWMOutputs(TIM1, ENABLE);
+ 650              		.loc 1 142 0
  651 044c 4FF43050 		mov	r0, #11264
  652 0450 C4F20100 		movt	r0, 16385
  653 0454 4FF00101 		mov	r1, #1
  654 0458 FFF7FEFF 		bl	TIM_CtrlPWMOutputs
- 185:../src/main.cc **** 	TIM_CtrlPWMOutputs(TIM2, ENABLE);
- 655              		.loc 1 185 0
+ 143:../src/main.cc **** 	TIM_CtrlPWMOutputs(TIM2, ENABLE);
+ 655              		.loc 1 143 0
  656 045c 4FF08040 		mov	r0, #1073741824
  657 0460 4FF00101 		mov	r1, #1
  658 0464 FFF7FEFF 		bl	TIM_CtrlPWMOutputs
- 186:../src/main.cc **** 	TIM_CtrlPWMOutputs(TIM3, ENABLE);
- 659              		.loc 1 186 0
+ 144:../src/main.cc **** 	TIM_CtrlPWMOutputs(TIM3, ENABLE);
+ 659              		.loc 1 144 0
  660 0468 4FF48060 		mov	r0, #1024
  661 046c C4F20000 		movt	r0, 16384
  662 0470 4FF00101 		mov	r1, #1
  663 0474 FFF7FEFF 		bl	TIM_CtrlPWMOutputs
- 187:../src/main.cc **** }
- 664              		.loc 1 187 0
+ 145:../src/main.cc **** }
+ 664              		.loc 1 145 0
  665 0478 80BD     		pop	{r7, pc}
  666              		.cfi_endproc
  667              	.LFE36:
@@ -845,10 +803,9 @@
  672              		.thumb_func
  674              	_Z13__assert_funcPKciS0_S0_:
  675              	.LFB37:
- 188:../src/main.cc **** 
- 189:../src/main.cc **** void __assert_func(const char *file, int line, const char *func,
- 190:../src/main.cc **** 		const char *failedexpr) {
- 676              		.loc 1 190 0
+ 146:../src/main.cc **** 
+ 147:../src/main.cc **** void __assert_func(const char *file, int line, const char *func, const char *failedexpr) {
+ 676              		.loc 1 147 0
  677              		.cfi_startproc
  678              		@ args = 0, pretend = 0, frame = 16
  679              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -868,8 +825,8 @@
  693 0486 7A60     		str	r2, [r7, #4]
  694 0488 3B60     		str	r3, [r7, #0]
  695              	.L13:
- 191:../src/main.cc **** 	while (1) {
- 696              		.loc 1 191 0 discriminator 1
+ 148:../src/main.cc **** 	while (1) {
+ 696              		.loc 1 148 0 discriminator 1
  697 048a FEE7     		b	.L13
  698              		.cfi_endproc
  699              	.LFE37:
@@ -879,11 +836,11 @@
  704              		.thumb_func
  706              	_Z8__assertPKciS0_:
  707              	.LFB38:
- 192:../src/main.cc **** 	}
- 193:../src/main.cc **** }
- 194:../src/main.cc **** 
- 195:../src/main.cc **** void __assert(const char *file, int line, const char *failedexpr) {
- 708              		.loc 1 195 0
+ 149:../src/main.cc **** 	}
+ 150:../src/main.cc **** }
+ 151:../src/main.cc **** 
+ 152:../src/main.cc **** void __assert(const char *file, int line, const char *failedexpr) {
+ 708              		.loc 1 152 0
  709              		.cfi_startproc
  710              		@ args = 0, pretend = 0, frame = 16
  711              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -901,15 +858,15 @@
  723 0492 F860     		str	r0, [r7, #12]
  724 0494 B960     		str	r1, [r7, #8]
  725 0496 7A60     		str	r2, [r7, #4]
- 196:../src/main.cc **** 	__assert_func(file, line, NULL, failedexpr);
- 726              		.loc 1 196 0
+ 153:../src/main.cc **** 	__assert_func(file, line, NULL, failedexpr);
+ 726              		.loc 1 153 0
  727 0498 F868     		ldr	r0, [r7, #12]
  728 049a B968     		ldr	r1, [r7, #8]
  729 049c 4FF00002 		mov	r2, #0
  730 04a0 7B68     		ldr	r3, [r7, #4]
  731 04a2 FFF7FEFF 		bl	_Z13__assert_funcPKciS0_S0_
- 197:../src/main.cc **** }
- 732              		.loc 1 197 0
+ 154:../src/main.cc **** }
+ 732              		.loc 1 154 0
  733 04a6 07F11007 		add	r7, r7, #16
  734 04aa BD46     		mov	sp, r7
  735 04ac 80BD     		pop	{r7, pc}
@@ -923,22 +880,22 @@
  744              		.file 6 "D:\\CORTEX\\F1_GlowingPainting\\Libraries\\CMSIS\\CM3\\CoreSupport/core_cm3.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.cc
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:23     .bss.TIM_OCInitStructure:00000000 TIM_OCInitStructure
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:20     .bss.TIM_OCInitStructure:00000000 $d
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:30     .bss.TIM_TimeBaseStructure:00000000 TIM_TimeBaseStructure
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:27     .bss.TIM_TimeBaseStructure:00000000 $d
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:33     .text:00000000 $t
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:38     .text:00000000 _Z5Delaym
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:82     .text:00000028 _Z8SetColormmm
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:165    .text._ZN6Trieda4testEi:00000000 $t
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:170    .text._ZN6Trieda4testEi:00000000 _ZN6Trieda4testEi
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:208    .text:000000dc main
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:432    .text:00000288 _Z17RCC_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:464    .text:000002a8 _Z18GPIO_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:406    .text:0000027c _Z18NVIC_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:551    .text:00000348 _Z20PERIPH_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:674    .text:0000047c _Z13__assert_funcPKciS0_S0_
-C:\Users\Peter\AppData\Local\Temp\ccxoAdfX.s:706    .text:0000048c _Z8__assertPKciS0_
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:23     .bss.TIM_OCInitStructure:00000000 TIM_OCInitStructure
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:20     .bss.TIM_OCInitStructure:00000000 $d
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:30     .bss.TIM_TimeBaseStructure:00000000 TIM_TimeBaseStructure
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:27     .bss.TIM_TimeBaseStructure:00000000 $d
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:33     .text:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:38     .text:00000000 _Z5Delaym
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:82     .text:00000028 _Z8SetColormmm
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:165    .text._ZN6Trieda4testEi:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:170    .text._ZN6Trieda4testEi:00000000 _ZN6Trieda4testEi
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:208    .text:000000dc main
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:432    .text:00000288 _Z17RCC_Configurationv
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:464    .text:000002a8 _Z18GPIO_Configurationv
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:406    .text:0000027c _Z18NVIC_Configurationv
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:551    .text:00000348 _Z20PERIPH_Configurationv
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:674    .text:0000047c _Z13__assert_funcPKciS0_S0_
+C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:706    .text:0000048c _Z8__assertPKciS0_
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

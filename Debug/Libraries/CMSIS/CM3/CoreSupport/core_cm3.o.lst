@@ -1634,29 +1634,29 @@
  906              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
 DEFINED SYMBOLS
                             *ABS*:00000000 core_cm3.c
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:18     .text:00000000 $t
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:23     .text:00000000 __get_PSP
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:53     .text:00000010 __set_PSP
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:77     .text:00000018 __get_MSP
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:106    .text:00000028 __set_MSP
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:130    .text:00000030 __get_BASEPRI
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:173    .text:00000050 __set_BASEPRI
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:210    .text:00000068 __get_PRIMASK
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:253    .text:00000088 __set_PRIMASK
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:290    .text:000000a0 __get_FAULTMASK
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:333    .text:000000c0 __set_FAULTMASK
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:370    .text:000000d8 __get_CONTROL
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:413    .text:000000f8 __set_CONTROL
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:450    .text:00000110 __REV
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:495    .text:00000134 __REV16
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:541    .text:00000158 __REVSH
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:587    .text:0000017c __RBIT
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:632    .text:000001a0 __LDREXB
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:677    .text:000001c4 __LDREXH
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:722    .text:000001e8 __LDREXW
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:767    .text:0000020c __STREXB
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:815    .text:00000238 __STREXH
-C:\Users\Peter\AppData\Local\Temp\cc2GNCKx.s:863    .text:00000264 __STREXW
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:18     .text:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:23     .text:00000000 __get_PSP
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:53     .text:00000010 __set_PSP
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:77     .text:00000018 __get_MSP
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:106    .text:00000028 __set_MSP
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:130    .text:00000030 __get_BASEPRI
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:173    .text:00000050 __set_BASEPRI
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:210    .text:00000068 __get_PRIMASK
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:253    .text:00000088 __set_PRIMASK
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:290    .text:000000a0 __get_FAULTMASK
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:333    .text:000000c0 __set_FAULTMASK
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:370    .text:000000d8 __get_CONTROL
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:413    .text:000000f8 __set_CONTROL
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:450    .text:00000110 __REV
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:495    .text:00000134 __REV16
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:541    .text:00000158 __REVSH
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:587    .text:0000017c __RBIT
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:632    .text:000001a0 __LDREXB
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:677    .text:000001c4 __LDREXH
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:722    .text:000001e8 __LDREXW
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:767    .text:0000020c __STREXB
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:815    .text:00000238 __STREXH
+C:\Users\Peter\AppData\Local\Temp\cc7u8MjU.s:863    .text:00000264 __STREXW
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

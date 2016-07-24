@@ -380,9 +380,9 @@ int main(void) {
  80004b2:	e783      	b.n	80003bc <main+0xa8>
 
 080004b4 <_Z18NVIC_Configurationv>:
-			Delay(_DELAY);
-		}
+		Delay(0x8fff);
 	}
+
 }
 
 void NVIC_Configuration(void) {
@@ -402,9 +402,7 @@ void RCC_Configuration(void) {
  80004c0:	b580      	push	{r7, lr}
  80004c2:	af00      	add	r7, sp, #0
 
-	RCC_APB2PeriphClockCmd(
-			RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO | RCC_APB2Periph_TIM1,
-			ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO | RCC_APB2Periph_TIM1, ENABLE);
  80004c4:	f640 000d 	movw	r0, #2061	; 0x80d
  80004c8:	f04f 0101 	mov.w	r1, #1
  80004cc:	f001 fb06 	bl	8001adc <RCC_APB2PeriphClockCmd>
@@ -606,8 +604,7 @@ void PERIPH_Configuration(void) {
 
 080006b4 <_Z13__assert_funcPKciS0_S0_>:
 
-void __assert_func(const char *file, int line, const char *func,
-		const char *failedexpr) {
+void __assert_func(const char *file, int line, const char *func, const char *failedexpr) {
  80006b4:	b480      	push	{r7}
  80006b6:	b085      	sub	sp, #20
  80006b8:	af00      	add	r7, sp, #0
