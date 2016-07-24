@@ -880,22 +880,22 @@
  744              		.file 6 "D:\\CORTEX\\F1_GlowingPainting\\Libraries\\CMSIS\\CM3\\CoreSupport/core_cm3.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.cc
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:23     .bss.TIM_OCInitStructure:00000000 TIM_OCInitStructure
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:20     .bss.TIM_OCInitStructure:00000000 $d
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:30     .bss.TIM_TimeBaseStructure:00000000 TIM_TimeBaseStructure
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:27     .bss.TIM_TimeBaseStructure:00000000 $d
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:33     .text:00000000 $t
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:38     .text:00000000 _Z5Delaym
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:82     .text:00000028 _Z8SetColormmm
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:165    .text._ZN6Trieda4testEi:00000000 $t
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:170    .text._ZN6Trieda4testEi:00000000 _ZN6Trieda4testEi
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:208    .text:000000dc main
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:432    .text:00000288 _Z17RCC_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:464    .text:000002a8 _Z18GPIO_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:406    .text:0000027c _Z18NVIC_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:551    .text:00000348 _Z20PERIPH_Configurationv
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:674    .text:0000047c _Z13__assert_funcPKciS0_S0_
-C:\Users\Peter\AppData\Local\Temp\ccQE1YOn.s:706    .text:0000048c _Z8__assertPKciS0_
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:23     .bss.TIM_OCInitStructure:00000000 TIM_OCInitStructure
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:20     .bss.TIM_OCInitStructure:00000000 $d
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:30     .bss.TIM_TimeBaseStructure:00000000 TIM_TimeBaseStructure
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:27     .bss.TIM_TimeBaseStructure:00000000 $d
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:33     .text:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:38     .text:00000000 _Z5Delaym
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:82     .text:00000028 _Z8SetColormmm
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:165    .text._ZN6Trieda4testEi:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:170    .text._ZN6Trieda4testEi:00000000 _ZN6Trieda4testEi
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:208    .text:000000dc main
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:432    .text:00000288 _Z17RCC_Configurationv
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:464    .text:000002a8 _Z18GPIO_Configurationv
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:406    .text:0000027c _Z18NVIC_Configurationv
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:551    .text:00000348 _Z20PERIPH_Configurationv
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:674    .text:0000047c _Z13__assert_funcPKciS0_S0_
+C:\Users\Peter\AppData\Local\Temp\cci3Mdun.s:706    .text:0000048c _Z8__assertPKciS0_
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

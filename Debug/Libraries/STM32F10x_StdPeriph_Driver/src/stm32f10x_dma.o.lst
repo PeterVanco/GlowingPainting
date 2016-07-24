@@ -1551,18 +1551,18 @@
  869              		.file 5 "D:\\CORTEX\\F1_GlowingPainting\\Libraries\\CMSIS\\CM3\\CoreSupport/core_cm3.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f10x_dma.c
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:18     .text:00000000 $t
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:23     .text:00000000 DMA_DeInit
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:269    .text:00000220 DMA_Init
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:369    .text:000002a0 DMA_StructInit
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:444    .text:0000030c DMA_Cmd
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:497    .text:00000344 DMA_ITConfig
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:553    .text:00000380 DMA_SetCurrDataCounter
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:590    .text:0000039c DMA_GetCurrDataCounter
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:626    .text:000003b8 DMA_GetFlagStatus
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:699    .text:00000418 DMA_ClearFlag
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:748    .text:00000450 DMA_GetITStatus
-C:\Users\Peter\AppData\Local\Temp\ccojy7Qz.s:821    .text:000004b0 DMA_ClearITPendingBit
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:18     .text:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:23     .text:00000000 DMA_DeInit
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:269    .text:00000220 DMA_Init
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:369    .text:000002a0 DMA_StructInit
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:444    .text:0000030c DMA_Cmd
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:497    .text:00000344 DMA_ITConfig
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:553    .text:00000380 DMA_SetCurrDataCounter
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:590    .text:0000039c DMA_GetCurrDataCounter
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:626    .text:000003b8 DMA_GetFlagStatus
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:699    .text:00000418 DMA_ClearFlag
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:748    .text:00000450 DMA_GetITStatus
+C:\Users\Peter\AppData\Local\Temp\cceaDnWA.s:821    .text:000004b0 DMA_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

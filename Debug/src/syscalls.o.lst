@@ -648,22 +648,22 @@
  532              		.file 10 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib
 DEFINED SYMBOLS
                             *ABS*:00000000 syscalls.c
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:18     .text:00000000 $t
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:23     .text:00000000 _kill
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:64     .text:00000028 _exit
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:93     .text:00000034 _getpid
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:118    .bss.heap_end:00000000 $d
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:121    .bss.heap_end:00000000 heap_end
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:129    .text:00000044 get_heap_end
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:160    .text:0000005c get_stack_top
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:188    .text:0000006c _sbrk
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:262    .text:000000e0 _close
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:296    .text:000000f8 _fstat
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:335    .text:0000011c _lseek
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:371    .text:00000138 _read
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:407    .text:00000154 _write
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:458    .text:00000188 _isatty_r
-C:\Users\Peter\AppData\Local\Temp\ccOh6wOH.s:494    .text:000001a4 _isatty
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:18     .text:00000000 $t
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:23     .text:00000000 _kill
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:64     .text:00000028 _exit
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:93     .text:00000034 _getpid
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:118    .bss.heap_end:00000000 $d
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:121    .bss.heap_end:00000000 heap_end
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:129    .text:00000044 get_heap_end
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:160    .text:0000005c get_stack_top
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:188    .text:0000006c _sbrk
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:262    .text:000000e0 _close
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:296    .text:000000f8 _fstat
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:335    .text:0000011c _lseek
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:371    .text:00000138 _read
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:407    .text:00000154 _write
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:458    .text:00000188 _isatty_r
+C:\Users\Peter\AppData\Local\Temp\cc0N1m6H.s:494    .text:000001a4 _isatty
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
