@@ -15,8 +15,11 @@ class App {
 
 	void configureRcc();
 	void configureGpio();
-	void initPWMs();
 	void configureUart();
+
+	void initPWMs();
+	void initButton();
+	void initADC();
 
 public:
 
@@ -25,6 +28,9 @@ public:
 	void init();
 	void selfTest();
 	void step();
+	void sleep();
+
+	uint16_t readLightIntensity();
 
 };
 

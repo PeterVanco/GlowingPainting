@@ -26,23 +26,20 @@ typedef enum _LightID {
 	SMALL_1
 } LightID;
 
-Light big_1(&timer2, CHANNEL_2, BIG_1);
-Light big_2(&timer3, CHANNEL_1, BIG_2);
-Light big_3(&timer3, CHANNEL_2, BIG_3);
-Light big[] = {big_1, big_2, big_3};
+Light big_1(&timer1, CHANNEL_2, BIG_1);
+Light big_2(&timer1, CHANNEL_1, BIG_2);
+Light big[] = {big_1, big_2};
 
-Light middle_1(&timer1, CHANNEL_1, MIDDLE_1);
-Light middle_2(&timer1, CHANNEL_2, MIDDLE_1);
-Light middle[] = {middle_1, middle_2};
+Light middle_1(&timer3, CHANNEL_1, MIDDLE_1);
+Light middle[] = {middle_1};
 
-Light small_1(&timer1, CHANNEL_3, SMALL_1);
+Light small_1(&timer3, CHANNEL_2, SMALL_1);
 Light small[] = {small_1};
 
-// Light* allLights[] = {big, middle, small};
-Light allLights[] = {big_1, big_2, big_3, middle_1, middle_2, small_1};
+Light allLights[] = {big_1, big_2, middle_1, small_1};
 
 App::App() {
-	small_1.setMinimumValue(MIN_INTENSITY + 200);
+	// small_1.setMinimumValue(MIN_INTENSITY + 200);
 }
 
 
@@ -55,6 +52,8 @@ void App::init() {
 	printf("\n\nSystem initialized\n");
 
 	initPWMs();
+	initButton();
+	initADC();
 
 }
 
@@ -63,6 +62,84 @@ void App::initPWMs() {
 	for (i = 0; i < sizeof(PWMs) / sizeof(PWMs[0]); i++) {
 		PWMs[i].init();
 	}
+}
+
+void App::initADC() {
+
+	ADC_InitTypeDef  ADC_InitStructure;
+	/* PCLK2 is the APB2 clock */
+	/* ADCCLK = PCLK2/6 = 72/6 = 12MHz*/
+	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+
+	/* Enable ADC1 clock so that we can talk to it */
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	/* Put everything back to power-on defaults */
+	ADC_DeInit(ADC1);
+
+	/* ADC1 Configuration ------------------------------------------------------*/
+	/* ADC1 and ADC2 operate independently */
+	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+	/* Disable the scan conversion so we do one at a time */
+	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+	/* Don't do contimuous conversions - do them on demand */
+	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
+	/* Start conversin by software, not an external trigger */
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	/* Conversions are 12 bit - put them in the lower 12 bits of the result */
+	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+	/* Say how many channels would be used by the sequencer */
+	ADC_InitStructure.ADC_NbrOfChannel = 1;
+
+	/* Now do the setup */
+	ADC_Init(ADC1, &ADC_InitStructure);
+	/* Enable ADC1 */
+	ADC_Cmd(ADC1, ENABLE);
+
+	/* Enable ADC1 reset calibaration register */
+	ADC_ResetCalibration(ADC1);
+	/* Check the end of ADC1 reset calibration register */
+	while(ADC_GetResetCalibrationStatus(ADC1));
+	/* Start ADC1 calibaration */
+	ADC_StartCalibration(ADC1);
+	/* Check the end of ADC1 calibration */
+	while(ADC_GetCalibrationStatus(ADC1));
+}
+
+uint16_t App::readLightIntensity() {
+  ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_1Cycles5);
+  // Start the conversion
+  ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+  // Wait until conversion completion
+  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+  // Get the conversion value
+  return ADC_GetConversionValue(ADC1);
+}
+
+void App::initButton() {
+
+	GPIO_InitTypeDef GPIO_InitStructure;
+	EXTI_InitTypeDef EXTI_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource0);
+
+    EXTI_InitStructure.EXTI_Line = EXTI_Line0;
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&EXTI_InitStructure);
+
+    NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0F;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+
+	// NVIC_EnableIRQ(EXTI0_IRQn);
 }
 
 void App::selfTest() {
@@ -76,7 +153,7 @@ void App::selfTest() {
 	})
 
 	FOR_ALL_LIGHTS({
-		light->setValue(0xff);
+		light->setValue(MAX_INTENSITY);
 		sleepMs(500);
 	})
 
@@ -158,6 +235,7 @@ void App::configureGpio() {
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
 }
 
 void App::configureRcc() {
@@ -184,4 +262,29 @@ void App::configureUart() {
 
 	while (USART_GetFlagStatus(USART2, USART_FLAG_TC ) == RESET);
 	NVIC_EnableIRQ(USART2_IRQn);
+}
+
+void App::sleep() {
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, ENABLE);
+
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
+	GPIO_Init(GPIOD, &GPIO_InitStructure);
+	GPIO_Init(GPIOE, &GPIO_InitStructure);
+
+	initButton();
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, DISABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+
+	PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+
+	init();
+
 }

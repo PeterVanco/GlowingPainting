@@ -15,6 +15,7 @@ extern "C" {
 
 void SysTick_Handler(void);
 void USART2_IRQHandler(void);
+void EXTI0_IRQHandler(void);
 
 void uartPutc(uint8_t c);
 void sleepMs(uint32_t ms);

@@ -1,6 +1,8 @@
 
 #include "main.h"
 
+const int LIGHT_INTENSITY_TRESHOLD = 1500;
+
 __IO uint32_t sysTickActiveDelay;
 
 int main(void) {
@@ -8,12 +10,23 @@ int main(void) {
 	App app;
 
 	app.init();
-	// app.selfTest();
+
+	app.selfTest();
 
 	while (1) {
-		app.step();
-		sleepMs(10);
+
+		// printf("%i\n", app.readLightIntensity());
+
+		if (app.readLightIntensity() < LIGHT_INTENSITY_TRESHOLD) {
+			app.step();
+			sleepMs(10);
+		} else {
+			app.sleep();
+		}
+
 	}
+
+	// app.sleep();
 
 }
 
@@ -30,6 +43,15 @@ void USART2_IRQHandler(void)
 
 		USART_SendData(USART2, c);
 		while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+	}
+}
+
+void EXTI0_IRQHandler(void)
+{
+	if(EXTI_GetITStatus(EXTI_Line0) != RESET)
+	{
+		EXTI_ClearITPendingBit(EXTI_Line0);
+		printf("INT\n");
 	}
 }
 

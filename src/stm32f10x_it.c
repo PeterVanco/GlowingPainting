@@ -3,7 +3,7 @@
 #include "stm32f10x_it.h"
 
 void NMI_Handler(void) {
-
+	printf("NMI_Handler");
 }
 
 void HardFault_Handler(void) {
@@ -35,5 +35,6 @@ void DebugMon_Handler(void) {
 }
 
 void PendSV_Handler(void) {
-	printf("DebugMon_Handler");
+	printf("PendSV_Handler");
 }
+
