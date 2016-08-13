@@ -7,6 +7,10 @@
 #include "Light.h"
 
 
+const uint16_t LIGHT_INTENSITY_LOW_TRESHOLD = 1200;
+const uint16_t LIGHT_INTENSITY_HIGH_TRESHOLD = 2000;
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,6 +24,8 @@ class App {
 	void initPWMs();
 	void initButton();
 	void initADC();
+	void initADCWatchdog();
+	void initRTC();
 
 public:
 

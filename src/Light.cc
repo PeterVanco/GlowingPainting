@@ -17,7 +17,7 @@ Light::Light(PWM* pwmInstance,
 }
 
 void Light::setValue(const uint16_t value) {
-	printf("Setting %d to Light %i\n", value, lightId);
+	// printf("Setting %d to Light %i\n", value, lightId);
 	this->value = value;
 	pwmInstance->setChannel(pwmChannel, led_linearization[value]);
 }

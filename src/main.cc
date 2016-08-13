@@ -1,23 +1,38 @@
 
 #include "main.h"
 
-const int LIGHT_INTENSITY_TRESHOLD = 1500;
+typedef enum {
+	NORMAL,
+	LIGHT_INTENSITY_LOW,
+	LIGHT_INTENSITY_HIGH
+} LightIntensity;
 
 __IO uint32_t sysTickActiveDelay;
+__IO LightIntensity lightIntensity = NORMAL;
+
+App app;
 
 int main(void) {
-
-	App app;
 
 	app.init();
 
 	app.selfTest();
 
+//	RTC_ClearFlag(RTC_FLAG_SEC);
+//	while(RTC_GetFlagStatus(RTC_FLAG_SEC) == RESET);
+
+//	/* Alarm in 3 second */
+//	RTC_SetAlarm(RTC_GetCounter()+ 3);
+//	/* Wait until last write operation on RTC registers has finished */
+//	RTC_WaitForLastTask();
+
 	while (1) {
+
+		// printf("Loop\n");
 
 		// printf("%i\n", app.readLightIntensity());
 
-		if (app.readLightIntensity() < LIGHT_INTENSITY_TRESHOLD) {
+		if (lightIntensity != LIGHT_INTENSITY_HIGH) {
 			app.step();
 			sleepMs(10);
 		} else {
@@ -52,6 +67,48 @@ void EXTI0_IRQHandler(void)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line0);
 		printf("INT\n");
+	}
+}
+
+void ADC1_IRQHandler() {
+
+	/* Clear ADC1 AWD pending interrupt bit */
+	ADC_ClearITPendingBit(ADC1, ADC_IT_AWD);
+
+	// printf("ADC watchdog\n");
+
+	uint16_t value = ADC_GetConversionValue(ADC1);
+	if (lightIntensity != LIGHT_INTENSITY_HIGH && value > LIGHT_INTENSITY_HIGH_TRESHOLD) {
+		printf("Light intensity is above upper treshold (%i)\n", value);
+		lightIntensity = LIGHT_INTENSITY_HIGH;
+	} else if (lightIntensity != LIGHT_INTENSITY_LOW && value < LIGHT_INTENSITY_LOW_TRESHOLD) {
+		printf("Light intensity is below lower treshold (%i)\n", value);
+		lightIntensity = LIGHT_INTENSITY_LOW;
+	}
+
+}
+
+void RTCAlarm_IRQHandler(void) {
+
+	if(RTC_GetITStatus(RTC_IT_ALR) != RESET) {
+
+		printf("RTC\n");
+
+		/* Clear EXTI line17 pending bit */
+		EXTI_ClearITPendingBit(EXTI_Line17);
+
+		/* Check if the Wake-Up flag is set */
+		if(PWR_GetFlagStatus(PWR_FLAG_WU) != RESET) {
+			/* Clear Wake Up flag */
+			PWR_ClearFlag(PWR_FLAG_WU);
+		}
+
+		/* Wait until last write operation on RTC registers has finished */
+		RTC_WaitForLastTask();
+		/* Clear RTC Alarm interrupt pending bit */
+		RTC_ClearITPendingBit(RTC_IT_ALR);
+		/* Wait until last write operation on RTC registers has finished */
+		RTC_WaitForLastTask();
 	}
 }
 

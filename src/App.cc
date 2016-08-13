@@ -53,7 +53,9 @@ void App::init() {
 
 	initPWMs();
 	initButton();
-	initADC();
+	// initADC();
+	initADCWatchdog();
+	initRTC();
 
 }
 
@@ -63,6 +65,68 @@ void App::initPWMs() {
 		PWMs[i].init();
 	}
 }
+
+void App::initRTC() {
+
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	/* Configure EXTI Line17(RTC Alarm) to generate an interrupt on rising edge */
+	EXTI_ClearITPendingBit(EXTI_Line17);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line17;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&EXTI_InitStructure);
+
+	/* RTC clock source configuration ------------------------------------------*/
+	/* Allow access to BKP Domain */
+	PWR_BackupAccessCmd(ENABLE);
+
+	/* Reset Backup Domain */
+	BKP_DeInit();
+
+	RCC_LSICmd(ENABLE);
+
+	/* Select the RTC Clock Source */
+	RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
+	/* Wait until LSI is ready */
+	while (RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET)
+	{	}
+
+	/* Enable the RTC Clock */
+	RCC_RTCCLKCmd(ENABLE);
+
+	/* RTC configuration -------------------------------------------------------*/
+	/* Wait for RTC APB registers synchronisation */
+	RTC_WaitForSynchro();
+
+	/* Set the RTC time base to 1s */
+	RTC_SetPrescaler(32767);
+	/* Wait until last write operation on RTC registers has finished */
+	RTC_WaitForLastTask();
+
+	/* Enable the RTC Alarm interrupt */
+	RTC_ITConfig(RTC_IT_ALR, ENABLE);
+	/* Wait until last write operation on RTC registers has finished */
+	RTC_WaitForLastTask();
+
+
+	NVIC_InitTypeDef NVIC_InitStructure;
+
+	/* 2 bits for Preemption Priority and 2 bits for Sub Priority */
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+
+	NVIC_InitStructure.NVIC_IRQChannel = RTCAlarm_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+}
+
+
 
 void App::initADC() {
 
@@ -105,8 +169,71 @@ void App::initADC() {
 	while(ADC_GetCalibrationStatus(ADC1));
 }
 
+void App::initADCWatchdog() {
+
+	ADC_InitTypeDef  ADC_InitStructure;
+	/* PCLK2 is the APB2 clock */
+	/* ADCCLK = PCLK2/6 = 72/8 = 9MHz*/
+	RCC_ADCCLKConfig(RCC_PCLK2_Div8);
+
+	/* Enable ADC1 clock so that we can talk to it */
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	/* Put everything back to power-on defaults */
+	ADC_DeInit(ADC1);
+
+	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+
+	// TODO
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+
+	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+	ADC_InitStructure.ADC_NbrOfChannel = 1;
+	ADC_Init(ADC1, &ADC_InitStructure);
+
+	/* ADC1 regular channel14 configuration */
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_13Cycles5);
+
+	/* Configure high and low analog watchdog thresholds */
+	ADC_AnalogWatchdogThresholdsConfig(ADC1, LIGHT_INTENSITY_HIGH_TRESHOLD, LIGHT_INTENSITY_LOW_TRESHOLD);
+	/* Configure channel14 as the single analog watchdog guarded channel */
+	ADC_AnalogWatchdogSingleChannelConfig(ADC1, ADC_Channel_5);
+	/* Enable analog watchdog on one regular channel */
+	ADC_AnalogWatchdogCmd(ADC1, ADC_AnalogWatchdog_SingleRegEnable);
+
+	/* Enable AWD interrupt */
+	ADC_ITConfig(ADC1, ADC_IT_AWD, ENABLE);
+
+	/* Enable ADC1 */
+	ADC_Cmd(ADC1, ENABLE);
+
+	/* Enable ADC1 reset calibration register */
+	ADC_ResetCalibration(ADC1);
+	/* Check the end of ADC1 reset calibration register */
+	while(ADC_GetResetCalibrationStatus(ADC1));
+
+	/* Start ADC1 calibration */
+	ADC_StartCalibration(ADC1);
+	/* Check the end of ADC1 calibration */
+	while(ADC_GetCalibrationStatus(ADC1));
+
+	/* Start ADC1 Software Conversion */
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+
+
+	NVIC_InitTypeDef NVIC_InitStructure;
+
+	NVIC_InitStructure.NVIC_IRQChannel = ADC1_2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0F;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+}
+
 uint16_t App::readLightIntensity() {
-  ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_1Cycles5);
+  ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_13Cycles5);
   // Start the conversion
   ADC_SoftwareStartConvCmd(ADC1, ENABLE);
   // Wait until conversion completion
@@ -248,6 +375,7 @@ void App::configureRcc() {
 }
 
 void App::configureUart() {
+
 	USART_InitTypeDef USART_InitStructure;
 	USART_InitStructure.USART_BaudRate = 115200;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -261,10 +389,28 @@ void App::configureUart() {
 	USART_Cmd(USART2, ENABLE);
 
 	while (USART_GetFlagStatus(USART2, USART_FLAG_TC ) == RESET);
-	NVIC_EnableIRQ(USART2_IRQn);
+
+	NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0F;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
 void App::sleep() {
+
+
+
+	printf("Setting RTC alarm\n");
+
+	/* Alarm in 3 second */
+	RTC_SetAlarm(RTC_GetCounter()+ 3);
+	/* Wait until last write operation on RTC registers has finished */
+	RTC_WaitForLastTask();
+
+
+	printf("Going to sleep ...");
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, ENABLE);
 
@@ -283,8 +429,10 @@ void App::sleep() {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, DISABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 
-	PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+	// PWR_EnterSTANDBYMode();
+	PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFE);
 
 	init();
+	printf(" ... Woke up\n");
 
 }

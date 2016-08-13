@@ -12,13 +12,16 @@ extern "C" {
 #endif
 
 
-
 void SysTick_Handler(void);
 void USART2_IRQHandler(void);
 void EXTI0_IRQHandler(void);
+void ADC1_IRQHandler(void);
+void RTCAlarm_IRQHandler(void);
+
 
 void uartPutc(uint8_t c);
 void sleepMs(uint32_t ms);
+
 
 #ifdef __cplusplus
 }
