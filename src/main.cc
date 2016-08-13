@@ -2,13 +2,13 @@
 #include "main.h"
 
 typedef enum {
-	NORMAL,
+	LIGHT_INTENSITY_NORMAL,
 	LIGHT_INTENSITY_LOW,
 	LIGHT_INTENSITY_HIGH
 } LightIntensity;
 
 __IO uint32_t sysTickActiveDelay;
-__IO LightIntensity lightIntensity = NORMAL;
+__IO LightIntensity lightIntensity = LIGHT_INTENSITY_NORMAL;
 
 App app;
 
@@ -32,11 +32,12 @@ int main(void) {
 
 		// printf("%i\n", app.readLightIntensity());
 
-		if (lightIntensity != LIGHT_INTENSITY_HIGH) {
+		if (lightIntensity == LIGHT_INTENSITY_LOW) {
 			app.step();
 			sleepMs(10);
-		} else {
+		} else if (lightIntensity == LIGHT_INTENSITY_HIGH) {
 			app.sleep();
+			lightIntensity = LIGHT_INTENSITY_NORMAL;
 		}
 
 	}
@@ -75,7 +76,9 @@ void ADC1_IRQHandler() {
 	/* Clear ADC1 AWD pending interrupt bit */
 	ADC_ClearITPendingBit(ADC1, ADC_IT_AWD);
 
-	// printf("ADC watchdog\n");
+	if (lightIntensity == LIGHT_INTENSITY_NORMAL) {
+		printf("ADC watchdog\n");
+	}
 
 	uint16_t value = ADC_GetConversionValue(ADC1);
 	if (lightIntensity != LIGHT_INTENSITY_HIGH && value > LIGHT_INTENSITY_HIGH_TRESHOLD) {
