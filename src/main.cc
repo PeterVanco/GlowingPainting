@@ -46,12 +46,13 @@ int main(void) {
 }
 
 void uartPutc(uint8_t c) {
+
 	USART_SendData(USART2, c);
 	while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
 }
 
-void USART2_IRQHandler(void)
-{
+void USART2_IRQHandler() {
+
 	if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
 		uint16_t c = USART_ReceiveData(USART2);
 		USART_ClearITPendingBit(USART2, USART_IT_RXNE);
@@ -61,8 +62,8 @@ void USART2_IRQHandler(void)
 	}
 }
 
-void EXTI0_IRQHandler(void)
-{
+void EXTI0_IRQHandler() {
+
 	if(EXTI_GetITStatus(EXTI_Line0) != RESET)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line0);
@@ -90,7 +91,7 @@ void ADC1_IRQHandler() {
 
 }
 
-void RTCAlarm_IRQHandler(void) {
+void RTCAlarm_IRQHandler() {
 
 	if (RTC_GetITStatus(RTC_IT_ALR) != RESET) {
 

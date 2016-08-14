@@ -1,9 +1,8 @@
 #include "App.h"
 
 PWM timer1(TIM1);
-PWM timer2(TIM2);
 PWM timer3(TIM3);
-PWM PWMs[] = {timer1, timer2, timer3};
+PWM PWMs[] = {timer1, timer3};
 
 #define NO_OF_LIGHTS					sizeof(allLights) / sizeof(allLights[0])
 
@@ -15,14 +14,10 @@ PWM PWMs[] = {timer1, timer2, timer3};
 											}																\
 										}
 
-typedef enum _LightID {
+typedef enum {
 	BIG_1,
 	BIG_2,
-	BIG_3,
-
 	MIDDLE_1,
-	MIDDLE_2,
-
 	SMALL_1
 } LightID;
 
@@ -39,6 +34,7 @@ Light small[] = {small_1};
 Light allLights[] = {big_1, big_2, middle_1, small_1};
 
 App::App() {
+	initialized = false;
 	// small_1.setMinimumValue(MIN_INTENSITY + 200);
 }
 
@@ -53,7 +49,6 @@ void App::init() {
 
 	initPWMs();
 	initButton();
-	// initADC();
 	initADCWatchdog();
 	initRTC();
 
@@ -77,8 +72,6 @@ void App::initRTC() {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 
 	EXTI_InitTypeDef EXTI_InitStructure;
-
-	/* Configure EXTI Line17(RTC Alarm) to generate an interrupt on rising edge */
 	EXTI_ClearITPendingBit(EXTI_Line17);
 	EXTI_InitStructure.EXTI_Line = EXTI_Line17;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
@@ -86,93 +79,32 @@ void App::initRTC() {
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);
 
-	/* RTC clock source configuration ------------------------------------------*/
-	/* Allow access to BKP Domain */
 	PWR_BackupAccessCmd(ENABLE);
-
-	/* Reset Backup Domain */
 	BKP_DeInit();
 
 	RCC_LSICmd(ENABLE);
 
-	/* Select the RTC Clock Source */
 	RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
-	/* Wait until LSI is ready */
-	while (RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET)
-	{	}
+	while (RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET);
 
-	/* Enable the RTC Clock */
 	RCC_RTCCLKCmd(ENABLE);
 
-	/* RTC configuration -------------------------------------------------------*/
-	/* Wait for RTC APB registers synchronisation */
 	RTC_WaitForSynchro();
 
-	/* Set the RTC time base to 1s */
 	RTC_SetPrescaler(32767);
-	/* Wait until last write operation on RTC registers has finished */
 	RTC_WaitForLastTask();
 
-	/* Enable the RTC Alarm interrupt */
 	RTC_ITConfig(RTC_IT_ALR, ENABLE);
-	/* Wait until last write operation on RTC registers has finished */
 	RTC_WaitForLastTask();
-
 
 	NVIC_InitTypeDef NVIC_InitStructure;
-
-	/* 2 bits for Preemption Priority and 2 bits for Sub Priority */
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-
 	NVIC_InitStructure.NVIC_IRQChannel = RTCAlarm_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 
-}
-
-
-
-void App::initADC() {
-
-	ADC_InitTypeDef  ADC_InitStructure;
-	/* PCLK2 is the APB2 clock */
-	/* ADCCLK = PCLK2/6 = 72/6 = 12MHz*/
-	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
-
-	/* Enable ADC1 clock so that we can talk to it */
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-	/* Put everything back to power-on defaults */
-	ADC_DeInit(ADC1);
-
-	/* ADC1 Configuration ------------------------------------------------------*/
-	/* ADC1 and ADC2 operate independently */
-	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-	/* Disable the scan conversion so we do one at a time */
-	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
-	/* Don't do contimuous conversions - do them on demand */
-	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
-	/* Start conversin by software, not an external trigger */
-	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-	/* Conversions are 12 bit - put them in the lower 12 bits of the result */
-	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-	/* Say how many channels would be used by the sequencer */
-	ADC_InitStructure.ADC_NbrOfChannel = 1;
-
-	/* Now do the setup */
-	ADC_Init(ADC1, &ADC_InitStructure);
-	/* Enable ADC1 */
-	ADC_Cmd(ADC1, ENABLE);
-
-	/* Enable ADC1 reset calibaration register */
-	ADC_ResetCalibration(ADC1);
-	/* Check the end of ADC1 reset calibration register */
-	while(ADC_GetResetCalibrationStatus(ADC1));
-	/* Start ADC1 calibaration */
-	ADC_StartCalibration(ADC1);
-	/* Check the end of ADC1 calibration */
-	while(ADC_GetCalibrationStatus(ADC1));
 }
 
 void App::initADCWatchdog() {
@@ -220,9 +152,9 @@ void App::initADCWatchdog() {
 }
 
 uint16_t App::readLightIntensity() {
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_13Cycles5);
-	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-	while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+	//	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_13Cycles5);
+	//	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+	//	while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
 	return ADC_GetConversionValue(ADC1);
 }
 
@@ -256,8 +188,6 @@ void App::selfTest() {
 
 	printf("Self testing ...\n");
 
-	// printf("Found %d groups\n", sizeof(allLights) / sizeof(allLights[0]));
-
 	FOR_ALL_LIGHTS({
 		light->setValue(0x00);
 	})
@@ -267,17 +197,6 @@ void App::selfTest() {
 		sleepMs(500);
 	})
 
-//	uint8_t i;
-//	for (i = 0; i < 1; i++) {
-//		Light* group = *allLights[i];
-//		// printf("Group %d has %d lights\n", groupIndex, sizeof(*group));
-//		for (groupIndex = 0; groupIndex < sizeof(group) / sizeof(group[0]); groupIndex++) {
-//			printf("Turning ON light %d-%d\n", i, groupIndex);
-//			// allLights[i][groupIndex].setValue(0xff);
-//			sleepMs(500);
-//		}
-//	}
-
 	printf("All lights ON\n");
 
 	FOR_ALL_LIGHTS({
@@ -285,14 +204,6 @@ void App::selfTest() {
 		sleepMs(500);
 	})
 
-//	for (i = 0; i < sizeof(allLights) / sizeof(allLights[0]); i++) {
-//		uint8_t groupIndex;
-//		for (groupIndex = 0; groupIndex < sizeof(allLights[i]) / sizeof(allLights[i][0]); groupIndex++) {
-//			printf("Turning OFF light %d-%d\n", i, groupIndex);
-//			// allLights[i][groupIndex].setValue(0x00);
-//			sleepMs(500);
-//		}
-//	}
 	printf("All lights OFF\n");
 
 }
@@ -302,14 +213,6 @@ void App::step() {
 	FOR_ALL_LIGHTS({
 		light->setValue(light->step());
 	})
-
-//	uint8_t i;
-//	for (i = 0; i < sizeof(allLights) / sizeof(allLights[0]); i++) {
-//		uint8_t groupIndex;
-//		for (groupIndex = 0; groupIndex < sizeof(allLights[i]) / sizeof(allLights[i][0]); groupIndex++) {
-//			// allLights[i][groupIndex].setValue(allLights[i][groupIndex].step());
-//		}
-//	}
 }
 
 void App::configureGpio() {

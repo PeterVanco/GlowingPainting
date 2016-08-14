@@ -26,7 +26,6 @@ class App {
 
 	void initPWMs();
 	void initButton();
-	void initADC();
 	void initADCWatchdog();
 	void initRTC();
 
