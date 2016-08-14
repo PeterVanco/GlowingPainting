@@ -27,30 +27,37 @@ __IO LightMeasurementSuppression lightIntensityMeasurementSuppression = LIGHT_ME
 
 App app;
 
+bool isLightIntensityLowAndNotSuppressedFromLow() {
+	return lightIntensity == LIGHT_INTENSITY_LOW && lightIntensityMeasurementSuppression != LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW;
+}
+
+bool isLightIntensityHighOrSuppressedFromLow() {
+	return lightIntensity == LIGHT_INTENSITY_HIGH || lightIntensityMeasurementSuppression == LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW;
+}
+
+
 int main(void) {
 
-	app.init(true);
+	app.init(false);
+	// app.init(true);
 	// app.selfTest();
 
 	while (1) {
 
-		printf("%li\n", buttonDebouncer);
-
 		// (it was not DISABLED at NIGHT && is NIGHT) || it was ENABLED during DAY
-		if ((lightIntensityMeasurementSuppression != LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW && lightIntensity == LIGHT_INTENSITY_LOW)
-			||
-			lightIntensityMeasurementSuppression == LIGHT_MEASUREMENT_SUPPRESSED_FROM_HIGH) {
+		if (isLightIntensityLowAndNotSuppressedFromLow() || lightIntensityMeasurementSuppression == LIGHT_MEASUREMENT_SUPPRESSED_FROM_HIGH) {
 			if (app.getSystemState() != READY) {
 				app.init(true);
+				app.start();
 			}
 			app.step();
 			sleepMs(10);
-		} else if (buttonDebouncer == -1 && (lightIntensity == LIGHT_INTENSITY_HIGH || lightIntensityMeasurementSuppression == LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW)) {
+		} else if (buttonDebouncer == BUTTON_IDLE && isLightIntensityHighOrSuppressedFromLow()) {
 			SUPPRESS_ADC_MEASUREMENT({
+				app.stop();
 				app.sleep();
 				lightIntensity = LIGHT_INTENSITY_NORMAL_OR_UNKNOWN;
 			})
-			printf("W2\n");
 		}
 
 	}
@@ -73,18 +80,26 @@ void USART2_IRQHandler() {
 	}
 }
 
+void initAppAfterWakeUp() {
+	if (app.getSystemState() == NOT_INITIALIZED) {
+		app.init(false);
+	}
+}
+
 void EXTI0_IRQHandler() {
 
-	if(EXTI_GetITStatus(EXTI_Line0) != RESET)
-	{
+	if (EXTI_GetITStatus(EXTI_Line0) != RESET) {
 		EXTI_ClearITPendingBit(EXTI_Line0);
 
-		if (app.getSystemState() == NOT_INITIALIZED) {
-			app.init(false);
-		}
+		initAppAfterWakeUp();
 
 		buttonDebouncer = BUTTON_DEBOUNCE_TIME_MS;
-		printf("BTN-I\n");
+	}
+}
+
+void disableMeasurementSuppression(LightMeasurementSuppression suppressionType) {
+	if (lightIntensityMeasurementSuppression == suppressionType) {
+		lightIntensityMeasurementSuppression = LIGHT_MEASUREMENT_NOT_SUPPRESSED;
 	}
 }
 
@@ -96,25 +111,16 @@ void ADC1_IRQHandler() {
 		return;
 	}
 
-//	if (lightIntensity == LIGHT_INTENSITY_NORMAL_OR_UNKNOWN) {
-//		printf("MEAS\n");
-//	}
-
 	uint16_t value = app.readLightIntensity();
 	if (lightIntensity != LIGHT_INTENSITY_HIGH && value > LIGHT_INTENSITY_HIGH_TRESHOLD) {
-		printf("ABOVE (%i)\n", value);
+		// printf("ABOVE (%i)\n", value);
 		lightIntensity = LIGHT_INTENSITY_HIGH;
-		if (lightIntensityMeasurementSuppression == LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW) {
-			lightIntensityMeasurementSuppression = LIGHT_MEASUREMENT_NOT_SUPPRESSED;
-			printf("Measurement resumed\n");
-		}
+		disableMeasurementSuppression(LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW);
+
 	} else if (lightIntensity != LIGHT_INTENSITY_LOW && value < LIGHT_INTENSITY_LOW_TRESHOLD) {
-		printf("BELOW (%i)\n", value);
+		// printf("BELOW (%i)\n", value);
 		lightIntensity = LIGHT_INTENSITY_LOW;
-		if (lightIntensityMeasurementSuppression == LIGHT_MEASUREMENT_SUPPRESSED_FROM_HIGH) {
-			lightIntensityMeasurementSuppression = LIGHT_MEASUREMENT_NOT_SUPPRESSED;
-			printf("Measurement resumed\n");
-		}
+		disableMeasurementSuppression(LIGHT_MEASUREMENT_SUPPRESSED_FROM_HIGH);
 	}
 
 }
@@ -123,11 +129,7 @@ void RTCAlarm_IRQHandler() {
 
 	if (RTC_GetITStatus(RTC_IT_ALR) != RESET) {
 
-		if (app.getSystemState() == NOT_INITIALIZED) {
-			app.init(false);
-		}
-
-		printf("RTC\n");
+		initAppAfterWakeUp();
 
 		EXTI_ClearITPendingBit(EXTI_Line17);
 
@@ -150,30 +152,28 @@ void sleepMs(uint32_t ms) {
 void handleButton() {
 
 	if (lightIntensityMeasurementSuppression == LIGHT_MEASUREMENT_NOT_SUPPRESSED) {
-
-		if (lightIntensity == LIGHT_INTENSITY_LOW) {
-			printf("S-L\n");
-			lightIntensityMeasurementSuppression = LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW;
-		} else {
-			printf("S-H\n");
-			lightIntensityMeasurementSuppression = LIGHT_MEASUREMENT_SUPPRESSED_FROM_HIGH;
-		}
+		lightIntensityMeasurementSuppression = lightIntensity == LIGHT_INTENSITY_LOW ?
+																 LIGHT_MEASUREMENT_SUPPRESSED_FROM_LOW :
+																 LIGHT_MEASUREMENT_SUPPRESSED_FROM_HIGH;
 	} else {
-		printf("S-REM\n");
 		lightIntensityMeasurementSuppression = LIGHT_MEASUREMENT_NOT_SUPPRESSED;
 	}
 }
 
+void handleButtonDebouncer() {
+	if (buttonDebouncer > 0) {
+		buttonDebouncer--;
+	} else if (buttonDebouncer == 0) {
+		buttonDebouncer = BUTTON_IDLE;
+		handleButton();
+	}
+}
+
 void SysTick_Handler(void) {
+
 	if (sysTickActiveDelay) {
 		sysTickActiveDelay--;
 	}
 
-	if (buttonDebouncer > 0) {
-		buttonDebouncer--;
-	} else if (buttonDebouncer == 0) {
-		buttonDebouncer = -1;
-		printf("BTN-R\n");
-		handleButton();
-	}
+	handleButtonDebouncer();
 }

@@ -211,14 +211,34 @@ void App::selfTest() {
 
 }
 
+void App::start() {
+
+	big_1.setValue(big_1.step());
+	big_2.setValue(big_2.step());
+	sleepMs(500);
+	middle_1.setValue(middle_1.step());
+	sleepMs(500);
+	small_1.setValue(small_1.step());
+}
+
 void App::step() {
 
 	float lightFactor = (float) readLightIntensity() / (float) LIGHT_INTENSITY_LOW_TRESHOLD;
 
 	FOR_ALL_LIGHTS({
-		light->setLightFactor(lightFactor);
+		light->setMultiplicationFactor(lightFactor);
 		light->setValue(light->step());
 	})
+}
+
+void App::stop() {
+
+	small_1.setValue(0);
+	sleepMs(500);
+	middle_1.setValue(0);
+	sleepMs(500);
+	big_1.setValue(0);
+	big_2.setValue(0);
 }
 
 void App::configureGpio(const bool initPWM) {
@@ -309,7 +329,7 @@ void App::sleep() {
 	RTC_SetAlarm(RTC_GetCounter() + LIGHT_INTENSITY_CHECK_PERIOD);
 	RTC_WaitForLastTask();
 
-	printf("Going to sleep ...");
+	//printf("Going to sleep ...");
 
 	systemState = NOT_INITIALIZED;
 

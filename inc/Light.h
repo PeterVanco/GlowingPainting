@@ -23,10 +23,10 @@ class Light {
 	uint16_t min;
 	uint16_t max;
 	__IO uint16_t value;
-	float lightFactor;
+	float multiplicationFactor;
 
 	uint16_t linearize(uint16_t value);
-	uint16_t adjustToLightIntensity(uint16_t value);
+	uint16_t applyMultiplicationFactor(uint16_t value);
 
 public:
 
@@ -42,7 +42,7 @@ public:
 
 	void setMinimumValue(const uint16_t min);
 	void setMaximumValue(const uint16_t max);
-	void setLightFactor(const float factor);
+	void setMultiplicationFactor(const float factor);
 
 	uint16_t step();
 

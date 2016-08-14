@@ -12,7 +12,7 @@
 #define LIGHT_INTENSITY_CHECK_PERIOD	3
 
 #define BUTTON_DEBOUNCE_TIME_MS			200
-
+#define BUTTON_IDLE						-1
 
 typedef enum {
 	NOT_INITIALIZED,
@@ -47,7 +47,9 @@ public:
 	void selfTest();
 	void sleep();
 
+	void start();
 	void step();
+	void stop();
 
 	uint16_t readLightIntensity();
 
