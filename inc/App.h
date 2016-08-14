@@ -7,8 +7,9 @@
 #include "Light.h"
 
 
-const uint16_t LIGHT_INTENSITY_LOW_TRESHOLD = 1200;
-const uint16_t LIGHT_INTENSITY_HIGH_TRESHOLD = 2000;
+#define LIGHT_INTENSITY_LOW_TRESHOLD	3800
+#define LIGHT_INTENSITY_HIGH_TRESHOLD	4000
+#define LIGHT_INTENSITY_CHECK_PERIOD	3
 
 
 #ifdef __cplusplus
@@ -16,6 +17,8 @@ extern "C" {
 #endif
 
 class App {
+
+	bool initialized;
 
 	void configureRcc();
 	void configureGpio();
@@ -32,9 +35,11 @@ public:
 	App();
 
 	void init();
+	bool isInitialized();
 	void selfTest();
-	void step();
 	void sleep();
+
+	void step();
 
 	uint16_t readLightIntensity();
 

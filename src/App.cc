@@ -57,6 +57,12 @@ void App::init() {
 	initADCWatchdog();
 	initRTC();
 
+	initialized = true;
+
+}
+
+bool App::isInitialized() {
+	return initialized;
 }
 
 void App::initPWMs() {
@@ -172,55 +178,36 @@ void App::initADC() {
 void App::initADCWatchdog() {
 
 	ADC_InitTypeDef  ADC_InitStructure;
-	/* PCLK2 is the APB2 clock */
-	/* ADCCLK = PCLK2/6 = 72/8 = 9MHz*/
+
 	RCC_ADCCLKConfig(RCC_PCLK2_Div8);
 
-	/* Enable ADC1 clock so that we can talk to it */
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-	/* Put everything back to power-on defaults */
 	ADC_DeInit(ADC1);
 
 	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
 	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
 	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
-
-	// TODO
 	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-
 	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
 	ADC_InitStructure.ADC_NbrOfChannel = 1;
 	ADC_Init(ADC1, &ADC_InitStructure);
 
-	/* ADC1 regular channel14 configuration */
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_13Cycles5);
 
-	/* Configure high and low analog watchdog thresholds */
 	ADC_AnalogWatchdogThresholdsConfig(ADC1, LIGHT_INTENSITY_HIGH_TRESHOLD, LIGHT_INTENSITY_LOW_TRESHOLD);
-	/* Configure channel14 as the single analog watchdog guarded channel */
 	ADC_AnalogWatchdogSingleChannelConfig(ADC1, ADC_Channel_5);
-	/* Enable analog watchdog on one regular channel */
 	ADC_AnalogWatchdogCmd(ADC1, ADC_AnalogWatchdog_SingleRegEnable);
 
-	/* Enable AWD interrupt */
 	ADC_ITConfig(ADC1, ADC_IT_AWD, ENABLE);
 
-	/* Enable ADC1 */
 	ADC_Cmd(ADC1, ENABLE);
 
-	/* Enable ADC1 reset calibration register */
 	ADC_ResetCalibration(ADC1);
-	/* Check the end of ADC1 reset calibration register */
 	while(ADC_GetResetCalibrationStatus(ADC1));
-
-	/* Start ADC1 calibration */
 	ADC_StartCalibration(ADC1);
-	/* Check the end of ADC1 calibration */
 	while(ADC_GetCalibrationStatus(ADC1));
 
-	/* Start ADC1 Software Conversion */
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-
 
 	NVIC_InitTypeDef NVIC_InitStructure;
 
@@ -233,13 +220,10 @@ void App::initADCWatchdog() {
 }
 
 uint16_t App::readLightIntensity() {
-  ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_13Cycles5);
-  // Start the conversion
-  ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-  // Wait until conversion completion
-  while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
-  // Get the conversion value
-  return ADC_GetConversionValue(ADC1);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 1, ADC_SampleTime_13Cycles5);
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+	while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+	return ADC_GetConversionValue(ADC1);
 }
 
 void App::initButton() {
@@ -266,7 +250,6 @@ void App::initButton() {
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-	// NVIC_EnableIRQ(EXTI0_IRQn);
 }
 
 void App::selfTest() {
@@ -363,6 +346,11 @@ void App::configureGpio() {
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
+	// BOARD LED
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
+
 }
 
 void App::configureRcc() {
@@ -390,27 +378,24 @@ void App::configureUart() {
 
 	while (USART_GetFlagStatus(USART2, USART_FLAG_TC ) == RESET);
 
-	NVIC_InitTypeDef NVIC_InitStructure;
-    NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0F;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+	//NVIC_InitTypeDef NVIC_InitStructure;
+	//NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+	//NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
+	//NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0F;
+	//NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	//NVIC_Init(&NVIC_InitStructure);
 }
 
 void App::sleep() {
 
-
-
 	printf("Setting RTC alarm\n");
 
-	/* Alarm in 3 second */
-	RTC_SetAlarm(RTC_GetCounter()+ 3);
-	/* Wait until last write operation on RTC registers has finished */
+	RTC_SetAlarm(RTC_GetCounter() + LIGHT_INTENSITY_CHECK_PERIOD);
 	RTC_WaitForLastTask();
 
-
 	printf("Going to sleep ...");
+
+	initialized = false;
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, ENABLE);
 
@@ -429,10 +414,10 @@ void App::sleep() {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, DISABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 
-	// PWR_EnterSTANDBYMode();
 	PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFE);
 
-	init();
+	initADCWatchdog();
+
 	printf(" ... Woke up\n");
 
 }
