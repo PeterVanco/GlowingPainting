@@ -21,6 +21,8 @@ typedef enum {
 	SMALL_1
 } LightID;
 
+
+
 Light big_1(&timer1, CHANNEL_2, BIG_1);
 Light big_2(&timer1, CHANNEL_1, BIG_2);
 Light big[] = {big_1, big_2};
@@ -34,30 +36,33 @@ Light small[] = {small_1};
 Light allLights[] = {big_1, big_2, middle_1, small_1};
 
 App::App() {
-	initialized = false;
+	systemState = NOT_INITIALIZED;
 	// small_1.setMinimumValue(MIN_INTENSITY + 200);
 }
 
 
-void App::init() {
+void App::init(const bool initPWM) {
 
-	configureRcc();
-	configureGpio();
+	configureRcc(initPWM);
+	configureGpio(initPWM);
 	configureUart();
 
 	printf("\n\nSystem initialized\n");
 
-	initPWMs();
 	initButton();
 	initADCWatchdog();
 	initRTC();
 
-	initialized = true;
+	if (initPWM) {
+		initPWMs();
+	}
+
+	systemState = initPWM ? READY : READY_NO_PWM;
 
 }
 
-bool App::isInitialized() {
-	return initialized;
+SystemState App::getSystemState() {
+	return systemState;
 }
 
 void App::initPWMs() {
@@ -186,7 +191,7 @@ void App::initButton() {
 
 void App::selfTest() {
 
-	printf("Self testing ...\n");
+	printf("Testing ... ");
 
 	FOR_ALL_LIGHTS({
 		light->setValue(0x00);
@@ -197,25 +202,26 @@ void App::selfTest() {
 		sleepMs(500);
 	})
 
-	printf("All lights ON\n");
-
 	FOR_ALL_LIGHTS({
 		light->setValue(0x00);
 		sleepMs(500);
 	})
 
-	printf("All lights OFF\n");
+	printf("OK\n");
 
 }
 
 void App::step() {
 
+	float lightFactor = (float) readLightIntensity() / (float) LIGHT_INTENSITY_LOW_TRESHOLD;
+
 	FOR_ALL_LIGHTS({
+		light->setLightFactor(lightFactor);
 		light->setValue(light->step());
 	})
 }
 
-void App::configureGpio() {
+void App::configureGpio(const bool initPWM) {
 
 	GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -225,18 +231,19 @@ void App::configureGpio() {
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 	// TIM
+	if (initPWM) {
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
+		GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
-	GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);
-	GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE);
+		GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+		GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2, ENABLE);
+		GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE);
+	}
 
 	// UART2
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
@@ -256,13 +263,19 @@ void App::configureGpio() {
 
 }
 
-void App::configureRcc() {
+void App::configureRcc(const bool initPWM) {
 	RCC_ClocksTypeDef RCC_Clocks;
 	RCC_GetClocksFreq(&RCC_Clocks);
 	SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000);
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM2 | RCC_APB1Periph_USART2, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO | RCC_APB2Periph_TIM1, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO, ENABLE);
+
+	if (initPWM) {
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM2, ENABLE);
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
+	}
+
 }
 
 void App::configureUart() {
@@ -291,14 +304,14 @@ void App::configureUart() {
 
 void App::sleep() {
 
-	printf("Setting RTC alarm\n");
+	// printf("Setting RTC alarm\n");
 
 	RTC_SetAlarm(RTC_GetCounter() + LIGHT_INTENSITY_CHECK_PERIOD);
 	RTC_WaitForLastTask();
 
 	printf("Going to sleep ...");
 
-	initialized = false;
+	systemState = NOT_INITIALIZED;
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE, ENABLE);
 
@@ -319,8 +332,13 @@ void App::sleep() {
 
 	PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFE);
 
-	initADCWatchdog();
+//	if (!isInitialized()) {
+//		init();
+//		// initADCWatchdog();
+//	}
 
-	printf(" ... Woke up\n");
+	// initADCWatchdog();
+
+	printf("Woke up\n");
 
 }

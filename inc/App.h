@@ -11,6 +11,15 @@
 #define LIGHT_INTENSITY_HIGH_TRESHOLD	4000
 #define LIGHT_INTENSITY_CHECK_PERIOD	3
 
+#define BUTTON_DEBOUNCE_TIME_MS			200
+
+
+typedef enum {
+	NOT_INITIALIZED,
+	READY_NO_PWM,
+	READY
+} SystemState;
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,10 +27,10 @@ extern "C" {
 
 class App {
 
-	bool initialized;
+	__IO SystemState systemState;
 
-	void configureRcc();
-	void configureGpio();
+	void configureRcc(const bool initPWM);
+	void configureGpio(const bool initPWM);
 	void configureUart();
 
 	void initPWMs();
@@ -33,8 +42,8 @@ public:
 
 	App();
 
-	void init();
-	bool isInitialized();
+	void init(const bool initPWM);
+	SystemState getSystemState();
 	void selfTest();
 	void sleep();
 

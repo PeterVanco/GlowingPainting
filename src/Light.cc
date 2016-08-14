@@ -19,7 +19,15 @@ Light::Light(PWM* pwmInstance,
 void Light::setValue(const uint16_t value) {
 	// printf("Setting %d to Light %i\n", value, lightId);
 	this->value = value;
-	pwmInstance->setChannel(pwmChannel, led_linearization[value]);
+	pwmInstance->setChannel(pwmChannel, adjustToLightIntensity(linearize(value)));
+}
+
+uint16_t Light::linearize(uint16_t value) {
+	return led_linearization[value];
+}
+
+uint16_t Light::adjustToLightIntensity(uint16_t value) {
+	return value * lightFactor;
 }
 
 uint16_t Light::getValue() {
@@ -32,6 +40,10 @@ void Light::setMinimumValue(const uint16_t min) {
 
 void Light::setMaximumValue(const uint16_t max) {
 	this->max = max;
+}
+
+void Light::setLightFactor(const float factor) {
+	this->lightFactor = factor;
 }
 
 uint16_t Light::step() {

@@ -47,6 +47,7 @@
 								</option>
 								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.datasections.273902833" name="Data sections (-fdata-sections)" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.datasections" value="true" valueType="boolean"/>
 								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.other.otherflags.2126537587" name="Other flags" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.other.otherflags" value="-c" valueType="string"/>
+								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.shortenums.2016995002" name="Short enumerations (-fshort-enums)" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.shortenums" value="false" valueType="boolean"/>
 								<inputType id="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.567095740" superClass="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input"/>
 							</tool>
 							<tool command="arm-none-eabi-g++" id="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.cpp.compiler.debug.1377269833" name="ARM Sourcery Windows GCC C++ Compiler" superClass="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.cpp.compiler.debug">
@@ -158,20 +159,20 @@
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.c.compiler.release.1546435215;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.2037394179">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.assembler.debug.1631950152;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input.1711184497">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>
-		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.assembler.release.426173091;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input.1889608424">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.cpp.compiler.debug.1377269833;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.cpp.compiler.base.input.1279723131">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.c.compiler.release.1546435215;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.2037394179">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1167297012.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.cpp.compiler.release.846229760;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.cpp.compiler.base.input.852148300">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.cpp.compiler.debug.1377269833;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.cpp.compiler.base.input.1279723131">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileCPP"/>
+		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.assembler.debug.1631950152;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input.1711184497">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1306222073.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.c.compiler.debug.162108113;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.567095740">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>

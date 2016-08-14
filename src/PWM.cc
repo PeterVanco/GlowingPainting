@@ -26,6 +26,8 @@ void PWM::init() {
 
 	TIM_TimeBaseInit(timerInstance, &sTimeBaseInit);
 
+	setChannel(CHANNEL_1234, 0);
+
 	TIM_ARRPreloadConfig(timerInstance, ENABLE);
 	TIM_Cmd(timerInstance, ENABLE);
 	TIM_CtrlPWMOutputs(timerInstance, ENABLE);
